@@ -1,5 +1,9 @@
+import sqlite3
+
 class Player:
     all = []
+    con = sqlite3.connect('placeholder.db')
+    cur = con.cursor()
     
     def __init__(self, username, personal_best):
         self.username = username
@@ -26,9 +30,18 @@ class Player:
         else:
             raise AttributeError('personal best must be an integer')
         
-    
-        
-        
-        
+    @classmethod
+    def create_table(cls):
+        cur.execute("""CREATE TABLE IF NOT EXISTS username and personal bests(
+            username TEXT,
+            personal best INTEGER
+            )""")
+    @classmethod
+    def insert_data(cls, username, personal_best):
+        new_user = Player(username, personal_best)
+        if new_user:
+            pass
+        else:
+            raise Exception('could not create a new user, check that everything is correct and try again')
 from classes.puzzle import Puzzle
 from classes.result import Result
