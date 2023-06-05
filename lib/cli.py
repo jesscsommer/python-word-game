@@ -16,6 +16,12 @@ def main():
         if ready_to_play.upper() == "Y":
             select_puzzle()
 
+    elif choice == 2: 
+        username = input("Your username: ")
+        # validate that user does exist in DB already
+        # if not --> throw message; try again or type 1 to create one 
+        select_puzzle()
+
     elif choice == 3: 
         title = input("Your puzzle title, e.g. Puzzle1: ")
         solution = input("Your puzzle solution, a 5-letter word: ")
@@ -23,6 +29,9 @@ def main():
         if new_puzzle: 
             print("Puzzle created")
             main_menu()
+    
+    elif choice == 4: 
+        pass 
 
 def main_menu(): 
     print("""
@@ -36,7 +45,8 @@ Please select from the following:
 
 def select_puzzle():
     print("Which puzzle would you like to play?")
-    # show list of puzzle options from DB, a get_all & display
+    # show list of puzzle options from DB, a get_all & display 
+    # (only display what this user hasn't played)
     selected_puzzle = input("Enter puzzle name: ")
     # validate that selected_puzzle in list of available puzzles 
     #don't let user play a puzzle they've already played 
