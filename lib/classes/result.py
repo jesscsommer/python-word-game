@@ -61,3 +61,20 @@ class Appointment:
             return self._score_rank
         else:
             raise Exception("invalid high score")
+
+    @classmethod
+    def create_table(cls):
+        CURSOR.execute("""
+            CREATE TABLE IF NOT EXISTS result (
+                id INTEGER PRIMARY KEY,
+                player_id INTEGER,
+                puzzle_id INTEGER,
+                score INTEGER,
+                num_guesses INTEGER,
+                score_rank INTEGER,
+                )
+        """
+        )
+        print("attempted to create table")
+
+from .__init__ import CURSOR
