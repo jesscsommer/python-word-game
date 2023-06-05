@@ -37,4 +37,4 @@ class Player:
 
 
 from classes.puzzle import Puzzle
-from classes.result import Result
+# from classes.result import Result
