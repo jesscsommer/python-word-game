@@ -5,9 +5,8 @@ class Player:
     con = sqlite3.connect('placeholder.db')
     cur = con.cursor()
     
-    def __init__(self, username, personal_best):
+    def __init__(self, username):
         self.username = username
-        self.personal_best = personal_best
         type(self).all.append(self)
         
     @property
@@ -20,28 +19,22 @@ class Player:
         else:
             raise AttributeError('username must be a string between 1 and 8 characters and cannot be recreated')
         
-    @property
-    def personal_best(self):
-        return self._personal_best
-    @personal_best.setter
-    def personal_best(self, personal_best):
-        if isinstance(personal_best, int):
-            self._personal_best = personal_best
-        else:
-            raise AttributeError('personal best must be an integer')
-        
     @classmethod
     def create_table(cls):
-        cur.execute("""CREATE TABLE IF NOT EXISTS username and personal bests(
+        cur.execute("""CREATE TABLE IF NOT EXISTS players(
+            id INTEGER PRIMARY KEY,
             username TEXT,
             personal best INTEGER
             )""")
     @classmethod
-    def insert_data(cls, username, personal_best):
-        new_user = Player(username, personal_best)
+    def insert_data(cls, username):
+        new_user = Player(username)
         if new_user:
             pass
         else:
             raise Exception('could not create a new user, check that everything is correct and try again')
+        
+
+
 from classes.puzzle import Puzzle
 from classes.result import Result
