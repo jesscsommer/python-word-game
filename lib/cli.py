@@ -16,10 +16,10 @@ def main():
         if ready_to_play.upper() == "Y":
             select_puzzle()
 
-    if choice == 3: 
+    elif choice == 3: 
         title = input("Your puzzle title, e.g. Puzzle1: ")
         solution = input("Your puzzle solution, a 5-letter word: ")
-        new_puzzle = Puzzle(title, solution)
+        new_puzzle = Puzzle(title.lower(), solution.lower())
         if new_puzzle: 
             print("Puzzle created")
             main_menu()
@@ -38,15 +38,24 @@ def select_puzzle():
     print("Which puzzle would you like to play?")
     # show list of puzzle options from DB, a get_all & display
     selected_puzzle = input("Enter puzzle name: ")
-    # validate that selected_puzzle in list of avaialble puzzles 
+    # validate that selected_puzzle in list of available puzzles 
+    #don't let user play a puzzle they've already played 
     play_game(selected_puzzle)
 
 def play_game(puzzle): 
-    guess = input("Enter your guess: ")
-    if guess.upper() == "SNAKE":
-        print("Correct")
-    else: 
-        print("Wrong")
+    for guess_num in range(7):
+        guess = input("Enter your guess: ")
+        # validate guesses with regex -> A-z only, no guesses more than 5 letters
+        # eventually this would be does this equal puzzle.solution
+        if guess.lower() == "snake":
+            print("Correct")
+            break
+        else: 
+            correct_letters = {
+                letter for letter, correct in zip(guess, "snake") if letter == correct
+            }
+            print(f"Correct: {correct_letters}")
+            print("Wrong")
 
 if __name__ == '__main__':
     main()
