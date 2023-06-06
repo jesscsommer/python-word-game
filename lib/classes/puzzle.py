@@ -16,7 +16,7 @@ class Puzzle:
             self._title = title 
         else: 
             raise AttributeError("Puzzle title must be a string of 1-25 chars")
-        
+    
     @property
     def solution(self):
         return self._solution
@@ -29,7 +29,7 @@ class Puzzle:
             self._solution = solution
         else: 
             raise AttributeError("Puzzle solution must be a 5-letter string")
-        
+
     @classmethod
     def create_table(cls): 
         sql = """
