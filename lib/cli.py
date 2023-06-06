@@ -7,6 +7,7 @@ from helpers import (
     select_puzzle,
     create_puzzle,
     play_game,
+    exit_cli,
     invalid_input
 )
 
@@ -15,15 +16,17 @@ def main():
     welcome()
     while True: 
         menu()
-        choice = int(input())
-        if choice == 1: 
+        choice = input("> ")
+        if choice == "1": 
             register_player()
-        elif choice == 2: 
+        elif choice == "2": 
             validate_player()
-        elif choice == 3: 
+        elif choice == "13": 
             create_puzzle()
-        elif choice == 4: 
+        elif choice == "4": 
             pass 
+        elif choice == "5":
+            exit_cli()
         else: 
             invalid_input()
     

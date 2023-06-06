@@ -1,3 +1,5 @@
+# update these to actually reference the SQL updates
+
 def welcome():
     print("Welcome to the Python Word Game!")
 
@@ -40,7 +42,6 @@ def create_puzzle():
     new_puzzle = Puzzle(title.lower(), solution.lower())
     if new_puzzle: 
         print("Puzzle created")
-        main_menu()
 
 def play_game(puzzle):
     # this should probably end up split into many functions 
@@ -64,6 +65,9 @@ def play_game(puzzle):
             print(f"Wrong: {wrong_letters}")
             print("Wrong")
 
+def exit_cli():
+    print("Until next time!")
+    exit()
 
 def invalid_input():
     print("That input is not valid. Type a number to select an option.")
