@@ -1,7 +1,6 @@
 # update these to actually reference the SQL updates
 from rich.console import Console 
-from rich.theme import Theme
-
+import re
 
 console = Console(width=50)
 
@@ -50,20 +49,22 @@ def create_puzzle():
     if new_puzzle: 
         print("Puzzle created")
 
-def play_game(puzzle):
-    # this should probably end up split into many functions 
-    guesses = []
-    for guess_num in range(1,7):
+def play_game(puzzle, start = 1, prev_guesses = []):
+    guesses = prev_guesses
+    for guess_num in range(start, 7):
         new_guess = input("Enter your guess: ")
-        # validate guesses with regex -> A-z only, no guesses more than 5 letters
-        # eventually this would be does this equal puzzle.solution
-        guesses.append(new_guess)
-        handle_guess(guesses, puzzle.solution)
-        if new_guess.lower() == puzzle.solution:
-            console.print(f"[bold white on magenta] You guessed it! The word was {puzzle.solution} [/]")
-            # create a new result
-            exit_cli()
-            break
+        if re.match(r"^[A-z]{5}$", new_guess):
+            guesses.append(new_guess)
+            handle_guess(guesses, puzzle.solution)
+            if new_guess.lower() == puzzle.solution:
+                console.print(f"[bold white on magenta] You guessed it! The word was {puzzle.solution} [/]")
+                # create a new result
+                exit_cli()
+                break
+        else: 
+            console.print(f"[bold white on red] Each guess must be a 5-letter string. Please try again. [/]")
+            play_game(puzzle, guess_num, guesses)
+
     else: 
         end_game(puzzle.solution)
 
