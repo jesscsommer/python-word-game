@@ -16,7 +16,7 @@ class Puzzle:
             self._title = title 
         else: 
             raise AttributeError("Puzzle title must be a string of 1-25 chars")
-        
+    
     @property
     def solution(self):
         return self._solution

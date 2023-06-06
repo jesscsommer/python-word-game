@@ -1,9 +1,9 @@
+
 class Player:
-    all = []
-    
-    def __init__(self, username):
+
+    def __init__(self, username, id=None):
         self.username = username
-        type(self).all.append(self)
+        self.id = id
         
     @property
     def username(self):
@@ -21,22 +21,100 @@ class Player:
         return [result.score for result in Result.get_all() if result.player_id == self.id]
 
     @classmethod
-    def create_table(cls):
-        CURSOR.execute("""CREATE TABLE IF NOT EXISTS players(
-            id INTEGER PRIMARY KEY,
-            username TEXT,
-            personal best INTEGER
-            )""")
-    @classmethod
-    def insert_data(cls, username):
-        new_user = Player(username)
-        if new_user:
-            pass
-        else:
-            raise Exception('could not create a new user, check that everything is correct and try again')
+    def create_table(cls): 
+        sql = """
+            CREATE TABLE IF NOT EXISTS players (
+                id INTEGER PRIMARY KEY,
+                username TEXT
+            )
+        """
+        CURSOR.execute(sql)
+        CONN.commit()
+    
+    def update(self):
+        CURSOR.execute(
+            """
+            UPDATE players
+            SET username = ?
+            WHERE id = ?
+        """,
+            (self.username,),
+        )
+        CONN.commit()
+        return type(self).find_by_id(self.id)
+    
+    def save(self):
+        CURSOR.execute(
+            """
+            INSERT INTO players (username)
+            VALUES (?);
+        """,
+            (self.username,),
+        )
+        CONN.commit()
+        self.id = CURSOR.lastrowid
         
-
-
-from classes.puzzle import Puzzle
+    def delete(self):
+        CURSOR.execute(
+            """
+            DELETE FROM players
+            WHERE id = ?
+        """,
+            (self.id,),
+        )
+        CONN.commit()
+        return self
+    
+    @classmethod
+    def create_player(cls, username):
+        new_player = cls(username)
+        new_player.save()
+        return new_player
+        
+    @classmethod
+    def get_all(cls):
+        CURSOR.execute(
+            """
+                SELECT * FROM players;
+            """
+        )
+        rows = CURSOR.fetchall()
+        return [cls(row[1], row[0]) for row in rows]
+    
+    @classmethod
+    def find_by_id(cls, id):
+        CURSOR.execute(
+            """
+            SELECT * FROM players
+            WHERE id is ?;
+        """,
+            (id,),
+        )
+        row = CURSOR.fetchone()
+        return cls(row[1], row[0]) if row else None
+    @classmethod
+    def drop_table(cls):
+        CURSOR.execute(
+            """
+            DROP TABLE IF EXISTS players;
+        """
+        )
+        CONN.commit()
+    
+    @classmethod
+    def find_by_username(cls, username):
+        CURSOR.execute(
+            """
+            SELECT * FROM players
+            WHERE username is ?;
+        """,
+            (username,),
+        )
+        row = CURSOR.fetchone()
+        return cls(row[1], row[0]) if row else None
+    
+        
+    
 from .__init__ import CONN, CURSOR 
+# from classes.puzzle import Puzzle
 # from classes.result import Result

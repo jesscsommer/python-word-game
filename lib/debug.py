@@ -1,7 +1,12 @@
 from classes.puzzle import Puzzle
 from classes.player import Player
 
-Puzzle.create_table() 
-Player(15)
+Player.drop_table()
 
+Player.create_table()
+
+player_1 = Player.create_player('Winnr')
+player_2 = Player.create_player('Loser')
+
+print('complete')
 import ipdb; ipdb.set_trace()
