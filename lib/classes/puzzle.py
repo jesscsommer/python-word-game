@@ -30,6 +30,10 @@ class Puzzle:
         else: 
             raise AttributeError("Puzzle solution must be a 5-letter string")
         
+
+    def get_scores(self):
+        return [result.score for result in Result.get_all() if result.puzzle_id == self.id]
+
     @classmethod
     def create_table(cls): 
         sql = """
