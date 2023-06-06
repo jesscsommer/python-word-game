@@ -1,8 +1,9 @@
 
 class Player:
     
-    def __init__(self, username):
+    def __init__(self, username, id=None):
         self.username = username
+        self.id = id
         
     @property
     def username(self):
@@ -86,8 +87,15 @@ class Player:
         )
         row = CURSOR.fetchone()
         return cls(row[1], row[0]) if row else None
-    
+    @classmethod
+    def drop_table(cls):
+        CURSOR.execute(
+            """
+            DROP TABLE IF EXISTS players;
+        """
+        )
+        CONN.commit()
     
 from .__init__ import CONN, CURSOR 
-from classes.puzzle import Puzzle
-from classes.result import Result
+# from classes.puzzle import Puzzle
+# from classes.result import Result
