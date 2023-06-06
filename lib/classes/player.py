@@ -96,6 +96,20 @@ class Player:
         )
         CONN.commit()
     
+    @classmethod
+    def find_by_username(cls, username):
+        CURSOR.execute(
+            """
+            SELECT * FROM players
+            WHERE username is ?;
+        """,
+            (username,),
+        )
+        row = CURSOR.fetchone()
+        return cls(row[1], row[0]) if row else None
+    
+        
+    
 from .__init__ import CONN, CURSOR 
 # from classes.puzzle import Puzzle
 # from classes.result import Result
