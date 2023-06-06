@@ -24,8 +24,33 @@ class Player:
         """
         CURSOR.execute(sql)
         CONN.commit()
+    
+    def update_username(self):
+        CURSOR.execute(
+            """
+            UPDATE players
+            SET username = ?
+            WHERE id = ?
+        """,
+            (self.username),
+        )
+        CONN.commit()
+        return type(self).find_by_id(self.id)
+    
+    def save(self):
+        CURSOR.execute(
+            """
+            INSERT INTO players (username)
+            VALUES (?);
+        """,
+            (self.username),
+        )
+        CONN.commit()
+        self.id = CURSOR.lastrowid
         
     
+        
+        
 from .__init__ import CONN, CURSOR 
 from classes.puzzle import Puzzle
 from classes.result import Result
