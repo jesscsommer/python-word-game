@@ -1,6 +1,6 @@
 
 class Player:
-    
+
     def __init__(self, username, id=None):
         self.username = username
         self.id = id
@@ -14,7 +14,12 @@ class Player:
             self._username = username
         else:
             raise AttributeError('username must be a string between 1 and 8 characters and cannot be recreated')
-        
+
+    def get_scores(self, puzzle):
+        # validate that puzzle is a puzzle
+        # return player's scores for this puzzle
+        return [result.score for result in Result.get_all() if result.player_id == self.id]
+
     @classmethod
     def create_table(cls): 
         sql = """
