@@ -1,19 +1,30 @@
-
+import re
 class Player:
 
     def __init__(self, username, id=None):
         self.username = username
         self.id = id
-        
+
+    def __repr__(self):
+        return (f"<Username: {self.username}>")
+
     @property
     def username(self):
         return self._username
+
     @username.setter
     def username(self, username):
-        if isinstance(username, str) and 1 <= len(username) <= 8 and not hasattr(self, '_username'):
+        if (isinstance(username, str) 
+            and 1 <= len(username) <= 8 
+            and not hasattr(self, '_username')
+            and re.match(r"^[a-zA-Z0-9]+$", username)
+            ):
             self._username = username
         else:
             raise AttributeError('username must be a string between 1 and 8 characters and cannot be recreated')
+
+    # def __repr__(self):
+    #     return (f"<Username: {self.username}>")
 
     def get_scores(self, puzzle):
         # validate that puzzle is a puzzle
@@ -30,7 +41,7 @@ class Player:
         """
         CURSOR.execute(sql)
         CONN.commit()
-    
+
     def update(self):
         CURSOR.execute(
             """
@@ -42,7 +53,7 @@ class Player:
         )
         CONN.commit()
         return type(self).find_by_id(self.id)
-    
+
     def save(self):
         CURSOR.execute(
             """
@@ -53,7 +64,7 @@ class Player:
         )
         CONN.commit()
         self.id = CURSOR.lastrowid
-        
+
     def delete(self):
         CURSOR.execute(
             """
@@ -64,13 +75,13 @@ class Player:
         )
         CONN.commit()
         return self
-    
+
     @classmethod
     def create_player(cls, username):
         new_player = cls(username)
         new_player.save()
         return new_player
-        
+
     @classmethod
     def get_all(cls):
         CURSOR.execute(
@@ -80,7 +91,7 @@ class Player:
         )
         rows = CURSOR.fetchall()
         return [cls(row[1], row[0]) for row in rows]
-    
+
     @classmethod
     def find_by_id(cls, id):
         CURSOR.execute(
@@ -92,6 +103,7 @@ class Player:
         )
         row = CURSOR.fetchone()
         return cls(row[1], row[0]) if row else None
+
     @classmethod
     def drop_table(cls):
         CURSOR.execute(
@@ -100,7 +112,7 @@ class Player:
         """
         )
         CONN.commit()
-    
+
     @classmethod
     def find_by_username(cls, username):
         CURSOR.execute(
@@ -112,9 +124,7 @@ class Player:
         )
         row = CURSOR.fetchone()
         return cls(row[1], row[0]) if row else None
-    
-        
-    
+
 from .__init__ import CONN, CURSOR 
 # from classes.puzzle import Puzzle
-# from classes.result import Result
+from classes.result import Result
