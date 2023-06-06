@@ -23,7 +23,6 @@ class Player:
         # validate that puzzle is a puzzle
         # return player's scores for this puzzle
         return [result.score for result in Result.get_all() if result.player_id == self.id]
-        
 
     @classmethod
     def create_table(cls):
