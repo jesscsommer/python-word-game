@@ -1,11 +1,16 @@
-class Appointment:
+class Result:
 
-    def __init__(self, player_id, puzzle_id, score, num_guesses, score_rank):
+    all = []
+    count_guesses = 0
+    count_score = 300
+
+    def __init__(self, player_id, puzzle_id, score = 300, num_guesses = 0, score_rank = 0):
         self.player_id = player_id
         self.puzzle_id = puzzle_id
         self.score = score
         self.num_guesses = num_guesses
         self.score_rank = score_rank
+        type(self).all.append(self)
     
     @property
     def player_id(self):
@@ -61,6 +66,7 @@ class Appointment:
             return self._score_rank
         else:
             raise Exception("invalid high score")
+        
 
     @classmethod
     def create_table(cls):
@@ -77,4 +83,4 @@ class Appointment:
         )
         print("attempted to create table")
 
-from .__init__ import CURSOR
+from .__init__ import CONN, CURSOR
