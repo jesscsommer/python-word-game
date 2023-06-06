@@ -23,6 +23,7 @@ class Puzzle:
     
     @solution.setter 
     def solution(self, solution):
+        # should validate with RegEx too
         if (isinstance(solution, str)
             and len(solution) == 5
             and not hasattr(self, "_solution")):

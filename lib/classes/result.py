@@ -7,6 +7,16 @@ class Result:
         self.num_guesses = num_guesses
         self.id = id
 
+    def __repr__(self):
+        # the below assumes that the find by id methods will exist
+        return (
+            f"<Result {self.id}: "
+            + f"Player: {Player.find_by_id(self.player_id).username}"
+            + f"Puzzle: {Puzzle.find_by_id(self.puzzle_id).title}"
+            + f"Score: {self.score}"
+            + f"Guesses: {self.num_guesses}>"
+        )
+
     # update player id & puzzle id properties based on example 
     
     @property
@@ -84,6 +94,7 @@ class Result:
 
     @classmethod
     def get_all(cls):
+        # add optional sort by??? or optional limit???
         sql = """
             SELECT * FROM results;
         """
@@ -91,5 +102,32 @@ class Result:
         rows = CURSOR.fetchall()
         return [cls.new_from_db(row) for row in rows]
     
+    def save(self):
+        sql = """
+            INSERT INTO results (player_id, puzzle_id, score, num_guesses)
+            VALUES (?, ?, ?, ?)
+        """
+        CURSOR.execute(sql, (self.player_id, self.puzzle_id, 
+                        self.score, self.num_guesses))
+        CONN.commit()
+        self.id = CURSOR.lastrowid 
+    
+    @classmethod
+    def create(cls, player_id, puzzle_id, score, num_guesses):
+        new_result = cls(player_id, puzzle_id, score, num_guesses)
+        new_result.save()
+        return new_result 
+    
+    @classmethod
+    def find_by_id(cls, id):
+        sql = """
+            SELECT * FROM results
+            WHERE id is ?;
+        """
+        CURSOR.execute(sql, (id,))
+        row = CURSOR.fetchone()
+        return cls.new_from_db(row) if row else None 
 
 from .__init__ import CONN, CURSOR
+from .puzzle import Puzzle
+from .player import Player
