@@ -32,7 +32,7 @@ class Player:
             SET username = ?
             WHERE id = ?
         """,
-            (self.username),
+            (self.username,),
         )
         CONN.commit()
         return type(self).find_by_id(self.id)
@@ -43,14 +43,51 @@ class Player:
             INSERT INTO players (username)
             VALUES (?);
         """,
-            (self.username),
+            (self.username,),
         )
         CONN.commit()
         self.id = CURSOR.lastrowid
         
+    def delete(self):
+        CURSOR.execute(
+            """
+            DELETE FROM players
+            WHERE id = ?
+        """,
+            (self.id,),
+        )
+        CONN.commit()
+        return self
     
+    @classmethod
+    def create_player(cls, username):
+        new_player = cls(username)
+        new_player.save()
+        return new_player
         
-        
+    @classmethod
+    def get_all(cls):
+        CURSOR.execute(
+            """
+                SELECT * FROM players;
+            """
+        )
+        rows = CURSOR.fetchall()
+        return [cls(row[1], row[0]) for row in rows]
+    
+    @classmethod
+    def find_by_id(cls, id):
+        CURSOR.execute(
+            """
+            SELECT * FROM players
+            WHERE id is ?;
+        """,
+            (id,),
+        )
+        row = CURSOR.fetchone()
+        return cls(row[1], row[0]) if row else None
+    
+    
 from .__init__ import CONN, CURSOR 
 from classes.puzzle import Puzzle
 from classes.result import Result
