@@ -17,30 +17,36 @@ class Result:
             + f"Guesses: {self.num_guesses}>"
         )
 
-    # update player id & puzzle id properties based on example 
-    
     @property
-    def player_id(self):
-        return self._player_id
-    
-    @player_id.setter
-    def player_id (self, player_id):
-        if type(player_id) == int:
+    def player(self):
+        # assumes methods on Player
+        row = Player.find_by_id(self.player_id)
+        return Player.new_from_db(row) if row else None
+
+    @player.setter 
+    def player(self, player_id):
+        if (isinstance(player_id, int)
+            and player_id > 0 
+            and Player.find_by_id(player_id)):
             self._player_id = player_id
-        else:
-            raise Exception("invalid player_id type")
+        else: 
+            raise ValueError("Player must exist and have a positive integer ID")
         
     @property
-    def puzzle_id(self):
-        return self._puzzle_id
-    
-    @puzzle_id.setter
-    def puzzle_id (self, puzzle_id):
-        if type(puzzle_id) == int:
+    def puzzle(self):
+        # assumes methods on puzzle
+        row = Puzzle.find_by_id(self.puzzle_id)
+        return Puzzle.new_from_db(row) if row else None
+
+    @puzzle.setter 
+    def puzzle(self, puzzle_id):
+        if (isinstance(puzzle_id, int)
+            and puzzle_id > 0 
+            and Puzzle.find_by_id(puzzle_id)):
             self._puzzle_id = puzzle_id
-        else:
-            raise Exception("invalid puzzle_id type")
-        
+        else: 
+            raise ValueError("Puzzle must exist and have a positive integer ID")
+    
     @property
     def score(self):
         return self._score
@@ -50,7 +56,7 @@ class Result:
         if type(score) == int and 0<= score <= 300:
             self._score = score
         else:
-            raise Exception("Score is not an integer between 0 and 300")
+            raise ValueError("Score must be an integer between 0 and 300")
     
     @property
     def num_guesses(self):
@@ -58,10 +64,10 @@ class Result:
     
     @num_guesses.setter
     def num_guesses(self, num_guesses):
-        if type(num_guesses) == int and 0<= num_guesses <= 6:
+        if type(num_guesses) == int and 0 <= num_guesses <= 6:
             self._num_guesses = num_guesses
         else:
-            raise Exception("invalid num_guesses")
+            raise ValueError("Guesses must be an integer between 0 and 6")
 
     @classmethod
     def create_table(cls):
