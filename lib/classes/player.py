@@ -1,9 +1,5 @@
-import sqlite3
-
 class Player:
     all = []
-    con = sqlite3.connect('placeholder.db')
-    cur = con.cursor()
     
     def __init__(self, username):
         self.username = username
@@ -21,7 +17,7 @@ class Player:
         
     @classmethod
     def create_table(cls):
-        cur.execute("""CREATE TABLE IF NOT EXISTS players(
+        CURSOR.execute("""CREATE TABLE IF NOT EXISTS players(
             id INTEGER PRIMARY KEY,
             username TEXT,
             personal best INTEGER
@@ -37,4 +33,5 @@ class Player:
 
 
 from classes.puzzle import Puzzle
-from classes.result import Result
+from .__init__ import CONN, CURSOR 
+# from classes.result import Result
