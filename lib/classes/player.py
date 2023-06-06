@@ -26,7 +26,7 @@ class Player:
         CURSOR.execute(sql)
         CONN.commit()
     
-    def update_username(self):
+    def update(self):
         CURSOR.execute(
             """
             UPDATE players
