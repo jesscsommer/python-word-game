@@ -1,16 +1,13 @@
 class Result:
 
-    all = []
-    count_guesses = 0
-    count_score = 300
-
-    def __init__(self, player_id, puzzle_id, score = 300, num_guesses = 0, score_rank = 0):
+    def __init__(self, player_id, puzzle_id, score = 0, num_guesses = 0, id = None):
         self.player_id = player_id
         self.puzzle_id = puzzle_id
         self.score = score
         self.num_guesses = num_guesses
-        self.score_rank = score_rank
-        type(self).all.append(self)
+        self.id = id
+
+    # update player id & puzzle id properties based on example 
     
     @property
     def player_id(self):
@@ -55,22 +52,10 @@ class Result:
             self._num_guesses = num_guesses
         else:
             raise Exception("invalid num_guesses")
-        
-    @property
-    def score_rank(self):
-        return self._score_rank
-
-    @score_rank.setter
-    def score_rank(self, score_rank):
-        if type(score_rank) == int and 1 <= score_rank <= 100:
-            return self._score_rank
-        else:
-            raise Exception("invalid high score")
-        
 
     @classmethod
     def create_table(cls):
-        CURSOR.execute("""
+        sql = """
             CREATE TABLE IF NOT EXISTS result (
                 id INTEGER PRIMARY KEY,
                 player_id INTEGER,
@@ -78,9 +63,33 @@ class Result:
                 score INTEGER,
                 num_guesses INTEGER,
                 score_rank INTEGER,
-                )
+                FOREIGN KEY (player_id) REFERENCES players(id),
+                FOREIGN KEY (puzzle_id) REFERENCES puzzles(id)
+                );
         """
-        )
-        print("attempted to create table")
+        CURSOR.execute(sql)
+        CONN.commit()
+
+    @classmethod
+    def drop_table(cls):
+        sql = """
+            DROP TABLE IF EXISTS results;
+        """
+        CURSOR.execute(sql)
+        CONN.commit()
+
+    @classmethod
+    def new_from_db(cls, row): 
+        return cls(row[1], row[2], row[3], row[4], row[0])
+
+    @classmethod
+    def get_all(cls):
+        sql = """
+            SELECT * FROM results;
+        """
+        CURSOR.execute(sql)
+        rows = CURSOR.fetchall()
+        return [cls.new_from_db(row) for row in rows]
+    
 
 from .__init__ import CONN, CURSOR
