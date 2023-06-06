@@ -1,4 +1,9 @@
 # update these to actually reference the SQL updates
+from rich.console import Console 
+from rich.theme import Theme
+
+
+console = Console(width=50)
 
 def welcome():
     print("Welcome to the Python Word Game!")
@@ -19,7 +24,9 @@ def register_player():
     print(f"Hi there, {username}!")
     ready_to_play = input("Ready to play? Y/N: ")
     if ready_to_play.upper() == "Y":
-        select_puzzle()
+        # select_puzzle()
+        selected_puzzle_dummy_test = Puzzle("Puzzle1", "snake")
+        play_game(selected_puzzle_dummy_test)
 
 def validate_player():
     username = input("Your username: ")
@@ -45,25 +52,37 @@ def create_puzzle():
 
 def play_game(puzzle):
     # this should probably end up split into many functions 
-    for guess_num in range(7):
-        guess = input("Enter your guess: ")
+    guesses = []
+    for guess_num in range(1,7):
+        new_guess = input("Enter your guess: ")
         # validate guesses with regex -> A-z only, no guesses more than 5 letters
         # eventually this would be does this equal puzzle.solution
-        if guess.lower() == "snake":
-            print("Correct")
+        guesses.append(new_guess)
+        handle_guess(guesses, puzzle.solution)
+        if new_guess.lower() == puzzle.solution:
+            console.print(f"[bold white on magenta] You guessed it! The word was {puzzle.solution} [/]")
+            # create a new result
+            exit_cli()
             break
-        else: 
-            # rework the below 
-            correct_letters = {
-                letter for letter, correct in zip(guess, "snake") if letter == correct
-            }
-            misplaced_letters = set(guess) & set("snake") - correct_letters
-            wrong_letters = set(guess) - set("snake")
+    else: 
+        end_game(puzzle.solution)
 
-            print(f"Correct: {correct_letters}")
-            print(f"Misplaced: {misplaced_letters}")
-            print(f"Wrong: {wrong_letters}")
-            print("Wrong")
+def handle_guess(guesses, word):
+    for guess in guesses: 
+        styled_guess = []
+        for letter, correct_letter in zip(guess, word):
+            if letter == correct_letter: 
+                style = "bold white on green"
+            elif letter in word: 
+                style = "bold white on yellow"
+            else: 
+                style = "dim"
+            styled_guess.append(f"[{style}]{letter}[/]")
+        console.print("".join(styled_guess))
+
+def end_game(answer):
+    # create a result here or before this is called?? 
+    print(f"Game over! The word was {answer}")
 
 def exit_cli():
     print("Until next time!")

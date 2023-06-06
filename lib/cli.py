@@ -11,7 +11,7 @@ from helpers import (
     invalid_input
 )
 
-
+5
 def main(): 
     welcome()
     while True: 
@@ -21,7 +21,7 @@ def main():
             register_player()
         elif choice == "2": 
             validate_player()
-        elif choice == "13": 
+        elif choice == "3": 
             create_puzzle()
         elif choice == "4": 
             pass 
