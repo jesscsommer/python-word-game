@@ -18,9 +18,9 @@ def menu():
     print("5) Quit")
 
 def register_player():
-    username = input("Your username: ")
+    username = input("Your username: ").strip()
     check_username = Player.find_by_username(username)
-    if check_username is None and re.match(r"^[a-zA-Z0-9]+$", username):
+    if check_username is None and re.match(r"^[a-zA-Z0-9]+$", username) and username != "5":
         Player.create(username)
         print(f"Hi there, {username}!")
         ready_to_play = input("Ready to play? Y/N: ")
@@ -29,23 +29,27 @@ def register_player():
             select_puzzle()
         else:
             menu()
+    elif username == "5":
+        exit_cli()
     else:
-        print('That username is taken try another one')
+        print('That username is taken or invalid try another one')
         register_player()
 
 def validate_player():
-    username = input("Your username: ")
+    username = input("Your username: ").strip()
     check_username = Player.find_by_username(username)
-    if check_username is None and re.match(r"^[a-zA-Z0-9]+$", username):
-        print('That username does not exist create the new username then start game')
-        register_player()
-    else:
+    if check_username is not None and re.match(r"^[a-zA-Z0-9]+$", username) and username != "5":
         print(f"Welcome back {username}")
         ready_to_play = input("Ready to play? Y/N: ")
         if ready_to_play.upper() == "Y":
                 select_puzzle()
         else:
                 menu()
+    elif username == "5":
+        exit_cli()
+    else:
+        print('That username does not exist create the new username then start game')
+        register_player()
 
 def select_puzzle():
     print("Which puzzle would you like to play?")
