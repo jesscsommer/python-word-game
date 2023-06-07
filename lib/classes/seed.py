@@ -1,2 +1,0 @@
-# Feel free to use faker to generate seed data for your project, or create your own seed data.
-# In addition you may also fire up a get request to an API or scrape a webpage to get seed data for your project.

@@ -25,7 +25,7 @@ def register_player():
     if ready_to_play.upper() == "Y":
         # select_puzzle()
         selected_puzzle_dummy_test = Puzzle("Puzzle1", "snake")
-        play_game(selected_puzzle_dummy_test)
+        play_game(a, selected_puzzle_dummy_test)
 
 def validate_player():
     username = input("Your username: ")
@@ -49,7 +49,7 @@ def create_puzzle():
     if new_puzzle: 
         print("Puzzle created")
 
-def play_game(puzzle, start = 1, prev_guesses = []):
+def play_game(player, puzzle, start = 1, prev_guesses = []):
     guesses = prev_guesses
     for guess_num in range(start, 7):
         new_guess = input("Enter your guess: ")
@@ -59,14 +59,20 @@ def play_game(puzzle, start = 1, prev_guesses = []):
             if new_guess.lower() == puzzle.solution:
                 console.print(f"[bold white on magenta] You guessed it! The word was {puzzle.solution} [/]")
                 # create a new result
+                score = 350 - (50 * guess_num)
+                new_result = Result.create(player.id, puzzle.id, score, guess_num)
+                console.print(f"[bold white] Here are your results: {new_result} [/]")
                 exit_cli()
                 break
         else: 
             console.print(f"[bold white on red] Each guess must be a 5-letter string. Please try again. [/]")
-            play_game(puzzle, guess_num, guesses)
+            play_game(player, puzzle, guess_num, guesses)
 
     else: 
-        end_game(puzzle.solution)
+        new_result = Result.create(player.id, puzzle.id, 0, guess_num)
+        print(f"Game over! The word was {puzzle.solution}")
+        exit_cli()
+
 
 def handle_guess(guesses, word):
     for guess in guesses: 
@@ -81,10 +87,6 @@ def handle_guess(guesses, word):
             styled_guess.append(f"[{style}]{letter}[/]")
         console.print("".join(styled_guess))
 
-def end_game(answer):
-    # create a result here or before this is called?? 
-    print(f"Game over! The word was {answer}")
-
 def exit_cli():
     print("Until next time!")
     exit()
@@ -94,4 +96,5 @@ def invalid_input():
 
 from classes.puzzle import Puzzle
 from classes.player import Player
+from classes.result import Result
 

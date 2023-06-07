@@ -11,7 +11,6 @@ from helpers import (
     invalid_input
 )
 
-5
 def main(): 
     welcome()
     while True: 
