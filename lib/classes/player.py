@@ -1,5 +1,5 @@
 import re
-from helpers import select_puzzle, menu, register_player, play_game
+
 class Player:
 
     def __init__(self, username, id=None):
@@ -33,7 +33,7 @@ class Player:
             ready_to_play = input("Ready to play? Y/N: ")
             if ready_to_play.upper() == "Y":
                 # select_puzzle()
-                selected_puzzle_dummy_test = Puzzle("Puzzle1", "snake")
+                selected_puzzle_dummy_test = Puzzle("snake")
                 play_game(self, selected_puzzle_dummy_test)
             else:
                 menu()
@@ -158,3 +158,4 @@ class Player:
 from .__init__ import CONN, CURSOR 
 from classes.puzzle import Puzzle
 from classes.result import Result
+from helpers import select_puzzle, menu, register_player, play_game
