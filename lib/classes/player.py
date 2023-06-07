@@ -1,11 +1,11 @@
 import re
-from helpers import select_puzzle
+from helpers import select_puzzle, menu, register_player
 class Player:
 
     def __init__(self, username, id=None):
         self.username = username
         self.id = id
-
+    #TODO need to add regex for special characters
     def __repr__(self):
         return (f"<Username: {self.username}>")
 
@@ -33,8 +33,26 @@ class Player:
             ready_to_play = input("Ready to play? Y/N: ")
             if ready_to_play.upper() == "Y":
                 select_puzzle()
+            else:
+                menu()
         else:
             print('That username is taken try another one')
+            register_player()
+
+    def validate_user(self, username):
+        CURSOR.execute("SELECT * FROM players WHERE username = ?", (username,))
+        check_username = CURSOR.fetchone()
+        if check_username is None:
+            print('That username does not exist create the new username then start game')
+            register_player()
+        else:
+            # current_player = Player.find_by_username(username)
+            print(f"Welcome back {username}")
+            ready_to_play = input("Ready to play? Y/N: ")
+            if ready_to_play.upper() == "Y":
+                select_puzzle()
+            else:
+                menu()
 
     def get_scores(self, puzzle):
         # validate that puzzle is a puzzle

@@ -17,13 +17,12 @@ def register_player():
     a = Player(username)
     # print(a)
     Player.handle_new_player(a, username)
-    register_player()
+    
 
 def validate_player():
     username = input("Your username: ")
-    # validate that user does exist in DB already
-    # if not --> throw message; try again or type 1 to create one 
-    select_puzzle()
+    a = Player(username)
+    Player.validate_user(a, username)
 
 def select_puzzle():
     print("Which puzzle would you like to play?")
