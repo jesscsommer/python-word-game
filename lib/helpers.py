@@ -23,7 +23,8 @@ def register_player():
 
 def validate_player():
     username = input("Your username: ")
-    a = Player(username)
+    # a = Player(username)
+    a = None
     Player.validate_user(a, username)
 
 def select_puzzle():
