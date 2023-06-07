@@ -94,8 +94,8 @@ def play_game(player, puzzle, start = 1, prev_guesses = []):
                 print(puzzle.id)
                 # create a new result
                 score = 350 - (50 * guess_num)
-                # new_result = Result.create(player.id, puzzle.id, score, guess_num)
-                # console.print(f"[bold white] Here are your results: {new_result} [/]")
+                new_result = Result.create(player.id, puzzle.id, score, guess_num)
+                console.print(f"[bold white] Here are your results: {new_result} [/]")
                 exit_cli()
                 break
         else: 
