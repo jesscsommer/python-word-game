@@ -20,34 +20,32 @@ def menu():
 def register_player():
     username = input("Your username: ")
     check_username = Player.find_by_username(username)
-    if check_username is None and re.match(r"^[a-zA-Z0-9]+$", username):
-        Player.create(username)
-        print(f"Hi there, {username}!")
-        ready_to_play = input("Ready to play? Y/N: ")
-        if ready_to_play.upper() == "Y":
-            # selected_puzzle_dummy_test = Puzzle("Puzzle1", "snake")
-            select_puzzle()
-        else:
-            menu()
+
+    if (check_username is None 
+        and re.match(r"^[a-zA-Z0-9]+$", username)):
+        new_player = Player.create(username)
+        print(f"Hi there, {new_player.username}!")
+        select_puzzle(new_player)
     else:
-        print('That username is taken try another one')
+        print("That username is taken")
+        # offer option for user to retry with new username 
+        # or go back to play game as the player with that name
         register_player()
 
 def validate_player():
+    # should refactor this so that the username logic is in one place; 
+    # also I don't think we need the regex here 
+
     username = input("Your username: ")
-    check_username = Player.find_by_username(username)
-    if check_username is None and re.match(r"^[a-zA-Z0-9]+$", username):
+    current_player = Player.find_by_username(username)
+    if current_player is None and re.match(r"^[a-zA-Z0-9]+$", username):
         print('That username does not exist create the new username then start game')
         register_player()
     else:
         print(f"Welcome back {username}")
-        ready_to_play = input("Ready to play? Y/N: ")
-        if ready_to_play.upper() == "Y":
-                select_puzzle()
-        else:
-                menu()
+        select_puzzle(current_player)
 
-def select_puzzle():
+def select_puzzle(current_player):
     print("Which puzzle would you like to play?")
     # show list of puzzle options from DB, a get_all & display 
     # (only display what this user hasn't played)
