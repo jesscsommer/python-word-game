@@ -90,7 +90,7 @@ class Puzzle:
         CONN.commit()
     
     @classmethod
-    def get_all_puzzles(cls):
+    def get_all(cls):
         sql = """
             SELECT * FROM puzzles;
         """

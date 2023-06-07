@@ -2,8 +2,10 @@
 from rich.console import Console 
 import re
 
-
-console = Console(width=50)
+# do more with rich & console
+# create some global styles to reference throughout
+# rich supports themes --> check out 
+console = Console(width=150)
 
 def welcome():
     print("Welcome to the Python Word Game!")
@@ -46,14 +48,22 @@ def validate_player():
         select_puzzle(current_player)
 
 def select_puzzle(current_player):
+    unplayed_puzzles = list(set(Puzzle.get_all()) - set(current_player.puzzles()))
+    unplayed_puzzle_ids = [puzzle.id for puzzle in unplayed_puzzles]
+    
     print("Which puzzle would you like to play?")
-    # show list of puzzle options from DB, a get_all & display 
-    # (only display what this user hasn't played)
-    selected_puzzle = input("Enter puzzle name: ")
+    for puzzle in unplayed_puzzles: 
+        print(f"Puzzle {puzzle.id}")
+
+    selected_puzzle_id = input("Enter puzzle number: ")
+    if int(selected_puzzle_id) in unplayed_puzzle_ids:
+        play_game(current_player, selected_puzzle_id)
+    else: 
+        print("Not a valid puzzle number")
+        select_puzzle(current_player)
     # validate that selected_puzzle in list of available puzzles 
     #don't let user play a puzzle they've already played 
-    play_game(selected_puzzle)
-
+    
 def create_puzzle():
     title = input("Your puzzle title, e.g. Puzzle1: ")
     solution = input("Your puzzle solution, a 5-letter word: ")
