@@ -15,11 +15,9 @@ def menu():
 def register_player():
     username = input("Your username: ")
     a = Player(username)
-    print(a)
-    print(f"Hi there, {username}!")
-    ready_to_play = input("Ready to play? Y/N: ")
-    if ready_to_play.upper() == "Y":
-        select_puzzle()
+    # print(a)
+    Player.handle_new_player(a, username)
+    register_player()
 
 def validate_player():
     username = input("Your username: ")

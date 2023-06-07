@@ -1,4 +1,5 @@
 import re
+from helpers import select_puzzle
 class Player:
 
     def __init__(self, username, id=None):
@@ -23,8 +24,17 @@ class Player:
         else:
             raise AttributeError('username must be a string between 1 and 8 characters and cannot be recreated')
 
-    # def __repr__(self):
-    #     return (f"<Username: {self.username}>")
+    def handle_new_player(self, username):
+        CURSOR.execute("SELECT * FROM players WHERE username = ?", (username,))
+        check_username = CURSOR.fetchone()
+        if check_username is None:
+            Player.create_player(username)
+            print(f"Hi there, {username}!")
+            ready_to_play = input("Ready to play? Y/N: ")
+            if ready_to_play.upper() == "Y":
+                select_puzzle()
+        else:
+            print('That username is taken try another one')
 
     def get_scores(self, puzzle):
         # validate that puzzle is a puzzle
