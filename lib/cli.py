@@ -23,7 +23,7 @@ def main():
         elif choice == "3": 
             create_puzzle()
         elif choice == "4": 
-            pass 
+            pass
         elif choice == "5":
             exit_cli()
         else: 

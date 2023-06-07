@@ -32,7 +32,6 @@ class Player:
             print(f"Hi there, {username}!")
             ready_to_play = input("Ready to play? Y/N: ")
             if ready_to_play.upper() == "Y":
-                # select_puzzle()
                 selected_puzzle_dummy_test = Puzzle("Puzzle1", "snake")
                 play_game(self, selected_puzzle_dummy_test)
             else:
@@ -44,6 +43,7 @@ class Player:
     def validate_user(self, username):
         CURSOR.execute("SELECT * FROM players WHERE username = ?", (username,))
         check_username = CURSOR.fetchone()
+        #TODO ad regex here delete from setter
         if check_username is None:
             print('That username does not exist create the new username then start game')
             register_player()
