@@ -1,11 +1,9 @@
-import re
 
 class Player:
 
     def __init__(self, username, id=None):
         self.username = username
         self.id = id
-    #TODO need to add regex for special characters
     def __repr__(self):
         return (f"<Username: {self.username}>")
 
@@ -24,37 +22,6 @@ class Player:
             # raise Exception('')
             print('usernames must be between 1 and 8 characters and cannot contain special characters(@!$&%...)')
             register_player()
-
-    def handle_new_player(self, username):
-        CURSOR.execute("SELECT * FROM players WHERE username = ?", (username,))
-        check_username = CURSOR.fetchone()
-        if check_username is None and re.match(r"^[a-zA-Z0-9]+$", username):
-            Player.create(username)
-            print(f"Hi there, {username}!")
-            ready_to_play = input("Ready to play? Y/N: ")
-            if ready_to_play.upper() == "Y":
-                selected_puzzle_dummy_test = Puzzle("Puzzle1", "snake")
-                play_game(self, selected_puzzle_dummy_test)
-            else:
-                menu()
-        else:
-            print('That username is taken try another one')
-            register_player()
-
-    def validate_user(self, username):
-        CURSOR.execute("SELECT * FROM players WHERE username = ?", (username,))
-        check_username = CURSOR.fetchone()
-        #TODO ad regex here delete from setter
-        if check_username is None and re.match(r"^[a-zA-Z0-9]+$", username):
-            print('That username does not exist create the new username then start game')
-            register_player()
-        else:
-            print(f"Welcome back {username}")
-            ready_to_play = input("Ready to play? Y/N: ")
-            if ready_to_play.upper() == "Y":
-                select_puzzle()
-            else:
-                menu()
 
     def get_scores(self, puzzle):
         # validate that puzzle is a puzzle
@@ -158,4 +125,4 @@ class Player:
 from .__init__ import CONN, CURSOR 
 from classes.puzzle import Puzzle
 from classes.result import Result
-from helpers import select_puzzle, menu, register_player, play_game
+from helpers import register_player

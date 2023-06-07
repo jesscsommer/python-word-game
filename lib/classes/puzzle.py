@@ -99,7 +99,7 @@ class Puzzle:
         return [cls(row[1], row[0]) for row in rows]
     
     @classmethod
-    def create_puzzle(cls, solution):
+    def create(cls, solution):
         new_puzzle = cls(solution)
         new_puzzle.save()
         return new_puzzle

@@ -2,6 +2,7 @@
 from rich.console import Console 
 import re
 
+
 console = Console(width=50)
 
 def welcome():
@@ -18,14 +19,33 @@ def menu():
 
 def register_player():
     username = input("Your username: ")
-    a = Player(username)
-    Player.handle_new_player(a, username)
+    check_username = Player.find_by_username(username)
+    if check_username is None and re.match(r"^[a-zA-Z0-9]+$", username):
+        Player.create(username)
+        print(f"Hi there, {username}!")
+        ready_to_play = input("Ready to play? Y/N: ")
+        if ready_to_play.upper() == "Y":
+            # selected_puzzle_dummy_test = Puzzle("Puzzle1", "snake")
+            select_puzzle()
+        else:
+            menu()
+    else:
+        print('That username is taken try another one')
+        register_player()
 
 def validate_player():
     username = input("Your username: ")
-    # a = Player(username)
-    a = None
-    Player.validate_user(a, username)
+    check_username = Player.find_by_username(username)
+    if check_username is None and re.match(r"^[a-zA-Z0-9]+$", username):
+        print('That username does not exist create the new username then start game')
+        register_player()
+    else:
+        print(f"Welcome back {username}")
+        ready_to_play = input("Ready to play? Y/N: ")
+        if ready_to_play.upper() == "Y":
+                select_puzzle()
+        else:
+                menu()
 
 def select_puzzle():
     print("Which puzzle would you like to play?")
@@ -91,4 +111,3 @@ def invalid_input():
 from classes.puzzle import Puzzle
 from classes.player import Player
 from classes.result import Result
-
