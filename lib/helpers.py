@@ -19,20 +19,12 @@ def menu():
 def register_player():
     username = input("Your username: ")
     a = Player(username)
-    # print(a)
     Player.handle_new_player(a, username)
-    # print(f"Hi there, {username}!")
-    # ready_to_play = input("Ready to play? Y/N: ")
-    # if ready_to_play.upper() == "Y":
-    #     # select_puzzle()
-    #     selected_puzzle_dummy_test = Puzzle("Puzzle1", "snake")
-    #     play_game(a, selected_puzzle_dummy_test)
-    # print(a)
-    
 
 def validate_player():
     username = input("Your username: ")
-    a = Player(username)
+    # a = Player(username)
+    a = None
     Player.validate_user(a, username)
 
 def select_puzzle():

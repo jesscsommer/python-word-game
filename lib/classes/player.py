@@ -17,23 +17,23 @@ class Player:
     def username(self, username):
         if (isinstance(username, str) 
             and 1 <= len(username) <= 8 
-            and not hasattr(self, '_username')
-            and re.match(r"^[a-zA-Z0-9]+$", username)
+            # and not hasattr(self, '_username')
             ):
             self._username = username
         else:
-            raise AttributeError('username must be a string between 1 and 8 characters and cannot be recreated')
+            # raise Exception('')
+            print('usernames must be between 1 and 8 characters and cannot contain special characters(@!$&%...)')
+            register_player()
 
     def handle_new_player(self, username):
         CURSOR.execute("SELECT * FROM players WHERE username = ?", (username,))
         check_username = CURSOR.fetchone()
-        if check_username is None:
-            Player.create_player(username)
+        if check_username is None and re.match(r"^[a-zA-Z0-9]+$", username):
+            Player.create(username)
             print(f"Hi there, {username}!")
             ready_to_play = input("Ready to play? Y/N: ")
             if ready_to_play.upper() == "Y":
-                # select_puzzle()
-                selected_puzzle_dummy_test = Puzzle("snake")
+                selected_puzzle_dummy_test = Puzzle("Puzzle1", "snake")
                 play_game(self, selected_puzzle_dummy_test)
             else:
                 menu()
@@ -44,11 +44,11 @@ class Player:
     def validate_user(self, username):
         CURSOR.execute("SELECT * FROM players WHERE username = ?", (username,))
         check_username = CURSOR.fetchone()
-        if check_username is None:
+        #TODO ad regex here delete from setter
+        if check_username is None and re.match(r"^[a-zA-Z0-9]+$", username):
             print('That username does not exist create the new username then start game')
             register_player()
         else:
-            # current_player = Player.find_by_username(username)
             print(f"Welcome back {username}")
             ready_to_play = input("Ready to play? Y/N: ")
             if ready_to_play.upper() == "Y":
@@ -107,7 +107,7 @@ class Player:
         return self
 
     @classmethod
-    def create_player(cls, username):
+    def create(cls, username):
         new_player = cls(username)
         new_player.save()
         return new_player

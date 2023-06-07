@@ -11,8 +11,8 @@ Player.create_table()
 Puzzle.create_table()
 Result.create_table()
 
-player_1 = Player.create_player('Winnr')
-player_2 = Player.create_player('Loser')
+player_1 = Player.create('Winnr')
+player_2 = Player.create('Loser')
 
 p1 = Puzzle.create_puzzle("Matte")
 p2 = Puzzle.create_puzzle("snake")
