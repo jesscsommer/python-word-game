@@ -9,19 +9,19 @@ class Result:
 
     def __repr__(self):
         # the below assumes that the find by id methods will exist
-        return (
-            f"<Result {self.id}: "
-            + f"Player: {Player.find_by_id(self.player_id).username}"
-            + f"Puzzle: {Puzzle.find_by_id(self.puzzle_id).title}"
-            + f"Score: {self.score}"
-            + f"Guesses: {self.num_guesses}>"
-        )
+        return (f"""
+            <Result {self.id}: 
+            Player: {Player.find_by_id(self.player_id).username}
+            Puzzle: {Puzzle.find_by_id(self.puzzle_id).solution}
+            Score: {self.score}
+            Guesses: {self.num_guesses}>
+        """)
 
     @property
     def player(self):
         # assumes methods on Player
         row = Player.find_by_id(self.player_id)
-        return Player.new_from_db(row) if row else None
+        return Player(row[1], row[0]) if row else None
 
     @player.setter 
     def player(self, player_id):
@@ -36,7 +36,7 @@ class Result:
     def puzzle(self):
         # assumes methods on puzzle
         row = Puzzle.find_by_id(self.puzzle_id)
-        return Puzzle.new_from_db(row) if row else None
+        return Puzzle(row[1], row[0]) if row else None
 
     @puzzle.setter 
     def puzzle(self, puzzle_id):

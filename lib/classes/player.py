@@ -1,5 +1,5 @@
 import re
-from helpers import select_puzzle, menu, register_player, play_game
+
 class Player:
 
     def __init__(self, username, id=None):
@@ -158,3 +158,4 @@ class Player:
 from .__init__ import CONN, CURSOR 
 from classes.puzzle import Puzzle
 from classes.result import Result
+from helpers import select_puzzle, menu, register_player, play_game
