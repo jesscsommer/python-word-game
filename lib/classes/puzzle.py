@@ -35,8 +35,20 @@ class Puzzle:
 
     def get_scores(self):
         return [result.score for result in Result.get_all() if result.puzzle_id == self.id]
+        # rework to have tuples for result.player and result.score]
+        # return [(result.player, result.score) for result in Result.get_all() if result.puzzle_id == self.id]
+    
+    def high_scores(self):
+        scores = self.get_scores()
+        if scores:
+            sorted_scores = sorted(scores, reverse = True)
+        top_ten_scores = sorted_scores[:10] if len(sorted_scores) > 10 else sorted_scores[:len(sorted_scores)]
+        print("HIGH SCORES: ")
+        for each_score in top_ten_scores:
+            print(f"""
+                {each_score}: {each_score}
+            """)
         
-
     @classmethod
     def create_table(cls): 
         sql = """
@@ -85,6 +97,15 @@ class Puzzle:
         return self
     
     @classmethod
+    def drop_table(cls):
+        CURSOR.execute(
+            """
+            DROP TABLE IF EXISTS puzzles;
+        """
+        )
+        CONN.commit()
+    
+    @classmethod
     def get_all_puzzles(cls):
         sql = """
             SELECT * FROM puzzles;
@@ -94,8 +115,8 @@ class Puzzle:
         return [cls.new_from_db(row) for row in rows]
     
     @classmethod
-    def create_puzzle(cls, title, solution, id):
-        new_puzzle = cls(title, solution, id)
+    def create_puzzle(cls, title, solution):
+        new_puzzle = cls(title, solution)
         new_puzzle.save()
         return new_puzzle
     
@@ -122,5 +143,5 @@ class Puzzle:
         return cls(row[1], row[0]) if row else None
 
 from .__init__ import CONN, CURSOR
-from .puzzle import Puzzle
 from .player import Player
+from .result import Result

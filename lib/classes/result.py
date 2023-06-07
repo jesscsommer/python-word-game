@@ -72,13 +72,12 @@ class Result:
     @classmethod
     def create_table(cls):
         sql = """
-            CREATE TABLE IF NOT EXISTS result (
+            CREATE TABLE IF NOT EXISTS results (
                 id INTEGER PRIMARY KEY,
                 player_id INTEGER,
                 puzzle_id INTEGER,
                 score INTEGER,
                 num_guesses INTEGER,
-                score_rank INTEGER,
                 FOREIGN KEY (player_id) REFERENCES players(id),
                 FOREIGN KEY (puzzle_id) REFERENCES puzzles(id)
                 );
