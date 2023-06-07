@@ -48,16 +48,27 @@ def validate_player():
         select_puzzle(current_player)
 
 def select_puzzle(current_player):
-    unplayed_puzzles = list(set(Puzzle.get_all()) - set(current_player.puzzles()))
-    unplayed_puzzle_ids = [puzzle.id for puzzle in unplayed_puzzles]
+    print(f"current player: {current_player}")
+    print(f"current player id: {current_player.id}")
+    print(f"current player results: {current_player.results()}")
+    print(f"current player puzzles: {current_player.puzzles()}")
+    played_puzzle_ids = [puzzle.id for puzzle in current_player.puzzles()]
+    print(f"played ids: {played_puzzle_ids}")
+    unplayed_puzzle_ids = [puzzle.id for puzzle in Puzzle.get_all() 
+                        if puzzle.id not in played_puzzle_ids]
+    print(f"unplayed ids: {unplayed_puzzle_ids}")
+
+    # unplayed_puzzles = list(set(Puzzle.get_all()) - set(current_player.puzzles()))
+    # unplayed_puzzle_ids = [puzzle.id for puzzle in unplayed_puzzles]
     
     print("Which puzzle would you like to play?")
-    for puzzle in unplayed_puzzles: 
-        print(f"Puzzle {puzzle.id}")
+    for id in unplayed_puzzle_ids: 
+        print(f"Puzzle {id}")
 
-    selected_puzzle_id = input("Enter puzzle number: ")
+    selected_puzzle_id = input("Enter puzzle number: ")  
     if int(selected_puzzle_id) in unplayed_puzzle_ids:
-        play_game(current_player, selected_puzzle_id)
+        selected_puzzle = Puzzle.find_by_id(int(selected_puzzle_id))
+        play_game(current_player, selected_puzzle)
     else: 
         print("Not a valid puzzle number")
         select_puzzle(current_player)
@@ -80,10 +91,11 @@ def play_game(player, puzzle, start = 1, prev_guesses = []):
             handle_guess(guesses, puzzle.solution)
             if new_guess.lower() == puzzle.solution:
                 console.print(f"[bold white on magenta] You guessed it! The word was {puzzle.solution} [/]")
+                print(puzzle.id)
                 # create a new result
                 score = 350 - (50 * guess_num)
-                new_result = Result.create(player.id, puzzle.id, score, guess_num)
-                console.print(f"[bold white] Here are your results: {new_result} [/]")
+                # new_result = Result.create(player.id, puzzle.id, score, guess_num)
+                # console.print(f"[bold white] Here are your results: {new_result} [/]")
                 exit_cli()
                 break
         else: 
