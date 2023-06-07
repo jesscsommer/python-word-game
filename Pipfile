@@ -5,7 +5,7 @@ name = "pypi"
 
 [packages]
 ipdb = "*"
-click = "*"
+rich = "*"
 
 [dev-packages]
 
