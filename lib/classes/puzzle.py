@@ -35,8 +35,19 @@ class Puzzle:
 
     def get_scores(self):
         return [result.score for result in Result.get_all() if result.puzzle_id == self.id]
+    
+    @classmethod
+    def high_scores(cls):
+        sorted_scores = [cls.get_scores.sorted(cls, key = cls.score, reverse = True)]
+        # return high_scores in range(1,10)
+        top_ten_scores = sorted_scores[:10]
+        for each_score in top_ten_scores:
+            print(f"""
+            HIGH SCORES: 
+            {each_score.name}: {each_score} /n
+            """
+            )
         
-
     @classmethod
     def create_table(cls): 
         sql = """
@@ -122,5 +133,5 @@ class Puzzle:
         return cls(row[1], row[0]) if row else None
 
 from .__init__ import CONN, CURSOR
-from .puzzle import Puzzle
 from .player import Player
+from .result import Result
