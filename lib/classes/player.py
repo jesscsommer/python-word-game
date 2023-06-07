@@ -22,12 +22,19 @@ class Player:
             # raise Exception('')
             print('usernames must be between 1 and 8 characters and cannot contain special characters(@!$&%...)')
             register_player()
+    
+    def results(self):
+        return [result for result in Result.get_all() if result.player_id == self.id]
 
-    def get_scores(self, puzzle):
+    def puzzles(self):
+        return [Puzzle.find_by_id(result.puzzle_id) for result in self.results()]
+    
+    def scores(self, puzzle):
         # validate that puzzle is a puzzle
         # return player's scores for this puzzle
-        return [result.score for result in Result.get_all() if result.player_id == self.id]
-
+        # still needs to make use of the puzzle arg
+        return [result.score for result in self.results()]
+    
     @classmethod
     def create_table(cls): 
         sql = """
