@@ -4,13 +4,20 @@ class Puzzle:
         self.solution = solution
         self.id = id 
     
+    def __eq__(self, other):
+        if not isinstance(other, type(self)):
+            return NotImplemented
+        return self.id == other.id 
+    
+    def __hash__(self):
+        return self.id
+        
     @property
     def solution(self):
         return self._solution
     
     @solution.setter 
     def solution(self, solution):
-        # should validate with RegEx too
         if (isinstance(solution, str)
             and len(solution) == 5
             and not hasattr(self, "_solution")):
@@ -18,23 +25,33 @@ class Puzzle:
         else: 
             raise AttributeError("Puzzle solution must be a 5-letter string")
         
-
     def get_scores(self):
-        # return [result.score for result in Result.get_all() if result.puzzle_id == self.id]
-        # rework to have tuples for result.player and result.score]
         return [(Player.find_by_id(result.player_id).username, result.score) for result in Result.get_all() if result.puzzle_id == self.id]
     
     def high_scores(self):
         scores = self.get_scores()
         if scores:
-            sorted_scores = sorted(scores, reverse = True)
+            sorted_scores = sorted(scores, key = lambda tup:tup[1], reverse = True)
         top_ten_scores = sorted_scores[:10] if len(sorted_scores) > 10 else sorted_scores[:len(sorted_scores)]
         print("HIGH SCORES: ")
+        # can try to use enumerate instead of index
+        index = 0
         for each_score in top_ten_scores:
+            index+=1
             print(f"""
-                {each_score}: {each_score}
+            {index}. {each_score[0]}: {each_score[-1]}
             """)
-        
+    def players(self):
+        all_players = self.get_scores()
+        players_list = list({each_player[0] for each_player in all_players})
+        print("PLAYERS OF THIS PUZZLE: ")
+        index = 0
+        for player in players_list:
+            index += 1
+            print(f"""
+            {index}. {player}
+            """)     
+
     @classmethod
     def create_table(cls): 
         sql = """
@@ -90,7 +107,7 @@ class Puzzle:
         CONN.commit()
     
     @classmethod
-    def get_all_puzzles(cls):
+    def get_all(cls):
         sql = """
             SELECT * FROM puzzles;
         """
@@ -112,19 +129,19 @@ class Puzzle:
         """
         CURSOR.execute(sql, (id,))
         row = CURSOR.fetchone()
-        return cls(row[1]) if row else None
+        return cls(row[1], row[0]) if row else None
     
-    # @classmethod
-    # def find_by_puzzle_name(cls, title):
-    #     CURSOR.execute(
-    #         """
-    #         SELECT * FROM puzzles
-    #         WHERE title is ?;
-    #         """,
-    #     (title,)
-    #     )
-    #     row = CURSOR.fetchone()
-    #     return cls(row[1], row[0]) if row else None
+    @classmethod
+    def find_by_solution(cls, solution):
+        CURSOR.execute(
+            """
+            SELECT * FROM puzzles
+            WHERE solution is ?;
+            """,
+        (solution,)
+        )
+        row = CURSOR.fetchone()
+        return cls(row[1], row[0]) if row else None
 
 from .__init__ import CONN, CURSOR
 from .player import Player

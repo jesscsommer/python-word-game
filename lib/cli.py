@@ -2,11 +2,8 @@ from helpers import (
     welcome, 
     menu,
     invalid_input,
-    register_player,
-    validate_player,
-    select_puzzle,
+    register_or_find_player,
     create_puzzle,
-    play_game,
     exit_cli,
     invalid_input
 )
@@ -17,9 +14,9 @@ def main():
         menu()
         choice = input("> ")
         if choice == "1": 
-            register_player()
-        elif choice == "2": 
-            validate_player()
+            register_or_find_player()
+        elif choice == "2":
+            register_or_find_player()
         elif choice == "3": 
             create_puzzle()
         elif choice == "4": 
