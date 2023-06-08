@@ -1,17 +1,19 @@
-# update these to actually reference the SQL updates
 from rich.console import Console 
+from rich.padding import Padding
 import re
 
 # do more with rich & console
 # create some global styles to reference throughout
 # rich supports themes --> check out 
-console = Console(width=150)
+console = Console()
+header_style = "bold black on white"
 
 EXIT_WORDS = ["5", "exit", "quit"]
 
 def welcome():
     # come up with new title
-    print("Welcome to the Python Word Game!")
+    welcome = Padding("Welcome to the Python Word Game!", (2, 4), style=header_style)
+    console.print(welcome, justify="center")
 
 def menu():
     print("Choose an option: ")
@@ -77,7 +79,7 @@ def play_game(player, puzzle, start = 1, prev_guesses = []):
         new_guess = input("Enter your guess: ")
         new_guess = new_guess.strip()
         check_input_for_exit(new_guess)
-        
+
         if re.match(r"^[A-z]{5}$", new_guess):
             guesses.append(new_guess)
             handle_guess(guesses, puzzle.solution)
