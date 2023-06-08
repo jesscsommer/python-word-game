@@ -30,7 +30,7 @@ def register_player():
         else:
             menu()
     elif username == "5":
-        exit_cli()
+        exit_cli() 
     else:
         print('That username is taken or invalid try another one')
         register_player()
@@ -42,9 +42,9 @@ def validate_player():
         print(f"Welcome back {username}")
         ready_to_play = input("Ready to play? Y/N: ")
         if ready_to_play.upper() == "Y":
-                select_puzzle()
+            select_puzzle()
         else:
-                menu()
+            menu()
     elif username == "5":
         exit_cli()
     else:
