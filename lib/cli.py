@@ -4,8 +4,9 @@ from helpers import (
     invalid_input,
     register_or_find_player,
     create_puzzle,
+    view_leaderboard,
     exit_cli,
-    invalid_input
+    invalid_input,
 )
 
 def main(): 
@@ -20,7 +21,7 @@ def main():
         elif choice == "3": 
             create_puzzle()
         elif choice == "4": 
-            pass
+            view_leaderboard()
         elif choice == "5":
             exit_cli()
         else: 

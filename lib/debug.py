@@ -47,8 +47,8 @@ for p in player_1.puzzles(): print(p.solution)
 for num in range(1, 18):
     Result.create(player_1.id, p1.id, num, sample([1, 2, 3, 4, 5], 1)[0])
     Result.create(player_2.id, p1.id, num, sample([1, 2, 3, 4, 5], 1)[0])
-    Result.create(player_3.id, p1.id, num, sample([1, 2, 3, 4, 5], 1)[0])
-    Result.create(player_4.id, p1.id, num, sample([1, 2, 3, 4, 5], 1)[0])
+    # Result.create(player_3.id, p1.id, num, sample([1, 2, 3, 4, 5], 1)[0])
+    # Result.create(player_4.id, p1.id, num, sample([1, 2, 3, 4, 5], 1)[0])
 
 print('complete')
 import ipdb; ipdb.set_trace()
