@@ -14,13 +14,13 @@ class Player:
     def username(self, username):
         if (isinstance(username, str) 
             and 1 <= len(username) <= 8 
-            # and not hasattr(self, '_username')
+            and not hasattr(self, '_username')
             ):
             self._username = username
         else:
             # raise Exception('')
             print('usernames must be between 1 and 8 characters and cannot contain special characters(@!$&%...)')
-            register_player()
+            # register_player()
     
     def results(self):
         return [result for result in Result.get_all() if result.player_id == self.id]

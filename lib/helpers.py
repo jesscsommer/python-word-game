@@ -35,8 +35,7 @@ def check_input_for_exit(input):
         exit_cli()
 
 def register_or_find_player():
-    username = input("Your username: ")
-    username = username.strip()
+    username = input("Your username: ").strip()
     check_input_for_exit(username)
     user = Player.find_by_username(username)
     
