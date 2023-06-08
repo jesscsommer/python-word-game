@@ -15,7 +15,7 @@ def main():
         choice = input("> ")
         if choice == "1": 
             register_or_find_player()
-        elif choice == "2": 
+        elif choice == "2":
             register_or_find_player()
         elif choice == "3": 
             create_puzzle()

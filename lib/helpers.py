@@ -18,7 +18,6 @@ console = Console(theme=cli_theme)
 EXIT_WORDS = ["5", "exit", "quit"]
 
 def welcome():
-    # come up with new title
     welcome = Padding("Welcome to Letter Lasso!", (1, 1), style="header")
     console.print(welcome, justify="center")
 
@@ -61,7 +60,7 @@ def select_puzzle(current_player):
     selected_puzzle = Puzzle.find_by_id(int(selected_puzzle_id))
 
     if selected_puzzle in unplayed_puzzles:
-        play_game(current_player, selected_puzzle)
+        play_game(current_player, selected_puzzle, 1, [])
     else: 
         print("Not a valid puzzle number")
         select_puzzle(current_player)
