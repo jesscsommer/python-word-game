@@ -1,11 +1,8 @@
-import re
-
 class Player:
 
     def __init__(self, username, id=None):
         self.username = username
         self.id = id
-    #TODO need to add regex for special characters
     def __repr__(self):
         return (f"<Username: {self.username}>")
 
@@ -17,50 +14,26 @@ class Player:
     def username(self, username):
         if (isinstance(username, str) 
             and 1 <= len(username) <= 8 
-            and not hasattr(self, '_username')
-            and re.match(r"^[a-zA-Z0-9]+$", username)
+            # and not hasattr(self, '_username')
             ):
             self._username = username
         else:
-            raise AttributeError('username must be a string between 1 and 8 characters and cannot be recreated')
-
-    def handle_new_player(self, username):
-        CURSOR.execute("SELECT * FROM players WHERE username = ?", (username,))
-        check_username = CURSOR.fetchone()
-        if check_username is None:
-            Player.create_player(username)
-            print(f"Hi there, {username}!")
-            ready_to_play = input("Ready to play? Y/N: ")
-            if ready_to_play.upper() == "Y":
-                # select_puzzle()
-                selected_puzzle_dummy_test = Puzzle("snake")
-                play_game(self, selected_puzzle_dummy_test)
-            else:
-                menu()
-        else:
-            print('That username is taken try another one')
+            # raise Exception('')
+            print('usernames must be between 1 and 8 characters and cannot contain special characters(@!$&%...)')
             register_player()
+    
+    def results(self):
+        return [result for result in Result.get_all() if result.player_id == self.id]
 
-    def validate_user(self, username):
-        CURSOR.execute("SELECT * FROM players WHERE username = ?", (username,))
-        check_username = CURSOR.fetchone()
-        if check_username is None:
-            print('That username does not exist create the new username then start game')
-            register_player()
-        else:
-            # current_player = Player.find_by_username(username)
-            print(f"Welcome back {username}")
-            ready_to_play = input("Ready to play? Y/N: ")
-            if ready_to_play.upper() == "Y":
-                select_puzzle()
-            else:
-                menu()
-
-    def get_scores(self, puzzle):
+    def puzzles(self):
+        return [Puzzle.find_by_id(result.puzzle_id) for result in self.results()]
+    
+    def scores(self, puzzle):
         # validate that puzzle is a puzzle
         # return player's scores for this puzzle
-        return [result.score for result in Result.get_all() if result.player_id == self.id]
-
+        # still needs to make use of the puzzle arg
+        return [result.score for result in self.results()]
+    
     @classmethod
     def create_table(cls): 
         sql = """
@@ -107,7 +80,7 @@ class Player:
         return self
 
     @classmethod
-    def create_player(cls, username):
+    def create(cls, username):
         new_player = cls(username)
         new_player.save()
         return new_player
@@ -158,4 +131,3 @@ class Player:
 from .__init__ import CONN, CURSOR 
 from classes.puzzle import Puzzle
 from classes.result import Result
-from helpers import select_puzzle, menu, register_player, play_game

@@ -4,13 +4,20 @@ class Puzzle:
         self.solution = solution
         self.id = id 
     
+    def __eq__(self, other):
+        if not isinstance(other, type(self)):
+            return NotImplemented
+        return self.id == other.id 
+    
+    def __hash__(self):
+        return self.id
+        
     @property
     def solution(self):
         return self._solution
     
     @solution.setter 
     def solution(self, solution):
-        # should validate with RegEx too
         if (isinstance(solution, str)
             and len(solution) == 5
             and not hasattr(self, "_solution")):
@@ -100,7 +107,7 @@ class Puzzle:
         CONN.commit()
     
     @classmethod
-    def get_all_puzzles(cls):
+    def get_all(cls):
         sql = """
             SELECT * FROM puzzles;
         """
@@ -109,7 +116,7 @@ class Puzzle:
         return [cls(row[1], row[0]) for row in rows]
     
     @classmethod
-    def create_puzzle(cls, solution):
+    def create(cls, solution):
         new_puzzle = cls(solution)
         new_puzzle.save()
         return new_puzzle
@@ -122,7 +129,19 @@ class Puzzle:
         """
         CURSOR.execute(sql, (id,))
         row = CURSOR.fetchone()
-        return cls(row[1]) if row else None
+        return cls(row[1], row[0]) if row else None
+    
+    @classmethod
+    def find_by_solution(cls, solution):
+        CURSOR.execute(
+            """
+            SELECT * FROM puzzles
+            WHERE solution is ?;
+            """,
+        (solution,)
+        )
+        row = CURSOR.fetchone()
+        return cls(row[1], row[0]) if row else None
 
 from .__init__ import CONN, CURSOR
 from .player import Player

@@ -8,7 +8,6 @@ class Result:
         self.id = id
 
     def __repr__(self):
-        # the below assumes that the find by id methods will exist
         return (f"""
             <Result {self.id}: 
             Player: {Player.find_by_id(self.player_id).username}
@@ -19,7 +18,6 @@ class Result:
 
     @property
     def player(self):
-        # assumes methods on Player
         row = Player.find_by_id(self.player_id)
         return Player(row[1], row[0]) if row else None
 
@@ -34,7 +32,6 @@ class Result:
         
     @property
     def puzzle(self):
-        # assumes methods on puzzle
         row = Puzzle.find_by_id(self.puzzle_id)
         return Puzzle(row[1], row[0]) if row else None
 
@@ -53,7 +50,7 @@ class Result:
     
     @score.setter
     def score(self, score):
-        if type(score) == int and 0<= score <= 300:
+        if type(score) == int and 0 <= score <= 300:
             self._score = score
         else:
             raise ValueError("Score must be an integer between 0 and 300")
@@ -99,7 +96,6 @@ class Result:
 
     @classmethod
     def get_all(cls):
-        # add optional sort by??? or optional limit???
         sql = """
             SELECT * FROM results;
         """
