@@ -20,6 +20,8 @@ Ready to play? Here's how to get started:
 4. Type "5", "exit", or "quit" at any point to end the program
 
 ## Features 
+![](letter_lasso.gif) 
+
 - 🐎 Create a new player 
 - 🐎 Select an unplayed puzzle
 - 🐎 Take up to 6 guesses per puzzle
