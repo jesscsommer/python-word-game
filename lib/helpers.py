@@ -36,6 +36,11 @@ def select_puzzle(current_player):
     played_puzzle_ids = [puzzle.id for puzzle in current_player.puzzles()]
     unplayed_puzzle_ids = [puzzle.id for puzzle in Puzzle.get_all() 
                         if puzzle.id not in played_puzzle_ids]
+    
+    print("Which puzzle would you like to play?")
+    for id in unplayed_puzzle_ids: 
+        print(f"Puzzle {id}")
+
     selected_puzzle_id = input("Enter puzzle number: ")  
 
     if int(selected_puzzle_id) in unplayed_puzzle_ids:
@@ -46,11 +51,10 @@ def select_puzzle(current_player):
         select_puzzle(current_player)
     
 def create_puzzle():
-    title = input("Your puzzle title, e.g. Puzzle1: ")
     solution = input("Your puzzle solution, a 5-letter word: ")
-    new_puzzle = Puzzle(title.lower(), solution.lower())
+    new_puzzle = Puzzle.create(solution.lower())
     if new_puzzle: 
-        print("Puzzle created")
+        print(f"Puzzle created for {new_puzzle.solution}")
 
 def play_game(player, puzzle, start = 1, prev_guesses = []):
     guesses = prev_guesses
@@ -66,7 +70,7 @@ def play_game(player, puzzle, start = 1, prev_guesses = []):
                 score = 350 - (50 * guess_num)
                 new_result = Result.create(player.id, puzzle.id, score, guess_num)
                 console.print(f"[bold white] Here are your results: {new_result} [/]")
-                exit_cli()
+                menu()
                 break
         else: 
             console.print(f"[bold white on red] Each guess must be a 5-letter string. Please try again. [/]")
@@ -75,7 +79,7 @@ def play_game(player, puzzle, start = 1, prev_guesses = []):
     else: 
         new_result = Result.create(player.id, puzzle.id, 0, guess_num)
         print(f"Game over! The word was {puzzle.solution}")
-        exit_cli()
+        menu()
 
 
 def handle_guess(guesses, word):

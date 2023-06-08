@@ -132,4 +132,3 @@ class Player:
 from .__init__ import CONN, CURSOR 
 from classes.puzzle import Puzzle
 from classes.result import Result
-from helpers import register_player
