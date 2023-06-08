@@ -1,6 +1,7 @@
 from rich.console import Console 
 from rich.padding import Padding
 from rich.theme import Theme
+from classes.style import Style
 import re
 
 # do more with rich & console
@@ -13,6 +14,8 @@ cli_theme = Theme({
     "wrong_letter": "dim frame",
     "error": "bold white on red"
 })
+rich_style = Style.__rich_console__
+
 console = Console(theme=cli_theme)
 
 EXIT_WORDS = ["5", "exit", "quit"]
@@ -84,6 +87,9 @@ def create_puzzle():
 
 def play_game(player, puzzle, start = 1, prev_guesses = []):
     guesses = prev_guesses
+    console.print(f"[bold white frame on yellow] When a letter turns yellow it means that letter is in the solution word, but it is not in the correct spot [/]")
+    console.print(f"[bold white frame on green] When a letter turns green it means that letter is in the solution word, and it is in the correct place [/]")
+    console.print('You can type exit at any time to leave the CLI')
     for guess_num in range(start, 7):
         new_guess = input("Enter your guess: ")
         new_guess = new_guess.strip()
