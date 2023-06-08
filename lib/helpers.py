@@ -19,7 +19,7 @@ EXIT_WORDS = ["5", "exit", "quit"]
 
 def welcome():
     # come up with new title
-    welcome = Padding("Welcome to the Python Word Game!", (1, 1), style="header")
+    welcome = Padding("Welcome to Letter Lasso!", (1, 1), style="header")
     console.print(welcome, justify="center")
 
 def menu():
@@ -94,7 +94,6 @@ def play_game(player, puzzle, start = 1, prev_guesses = []):
                 score = 350 - (50 * guess_num)
                 new_result = Result.create(player.id, puzzle.id, score, guess_num)
                 console.print(f"[bold white] Here are your results: {new_result} [/]")
-
                 break
         else: 
             console.print(f"[bold white on red] Each guess must be a 5-letter string. Please try again. [/]")
