@@ -23,7 +23,7 @@ def welcome():
     console.print(welcome, justify="center")
 
 def menu():
-    print("Choose an option: ")
+    console.print("Choose an option: ", style="header")
     print("1) Create new player")
     print("2) Play game")
     print("3) Create new puzzle")
