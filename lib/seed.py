@@ -1,7 +1,6 @@
-from puzzle import Puzzle
-from result import Result 
-from player import Player
-# assumes some of these methods will exist
+from classes.puzzle import Puzzle
+from classes.result import Result 
+from classes.player import Player
 
 Player.drop_table()
 Puzzle.drop_table()
@@ -23,4 +22,7 @@ player3 = Player.create("meridith")
 
 result1 = Result.create(player1.id, puzzle3.id, 150, 4)
 result2 = Result.create(player2.id, puzzle3.id, 300, 1)
-resulte = Result.create(player3.id, puzzle3.id, 200, 3)
+result3 = Result.create(player3.id, puzzle3.id, 200, 3)
+result4 = Result.create(player1.id, puzzle2.id, 100, 5)
+result5 = Result.create(player3.id, puzzle2.id, 250, 2)
+result6 = Result.create(player1.id, puzzle1.id, 0, 6)
