@@ -22,18 +22,28 @@ Ready to play? Here's how to get started:
 ## Features 
 ![](letter_lasso.gif) 
 
-- 🐎 Create a new player 
-- 🐎 Select an unplayed puzzle
-- 🐎 Take up to 6 guesses per puzzle
-- 🐎 Receive your score 
-- 🐎 Create a new puzzle
-- 🐎 View high scores by puzzle or player
+🐎 Create a new player <br>
+🐎 Select an unplayed puzzle <br>
+🐎 Take up to 6 guesses per puzzle <br>
+🐎 Receive your score <br>
+🐎 Create a new puzzle <br>
+🐎 View high scores by puzzle <br>
 
 ## Data tables
-- 🤠 players
-- 🤠 puzzles
-- 🤠 results 
-**include how these map to classes**
+🤠 players <br>
+- Stores players with their **username**
+- Maps to the Python class Player 
+
+🤠 puzzles <br>
+- Stores puzzles with their **solution**
+- Maps to the Python class Puzzle
+- Puzzle class includes methods for `get_scores()` and `high_scores()` to access all scores and best scores for each puzzle 
+
+🤠 results <br>
+- Stores results with their **player_id, puzzle_id, score,** and **number of guesses**
+- Maps to the Python class Result
+
+Methods available for all Python classes include: `create`, `save`, `update`, `delete`, `get_all`. 
 
 ## Contributor blogs
 - [Meridith](https://medium.com/@meridithlawn2)
