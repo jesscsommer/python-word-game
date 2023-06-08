@@ -34,9 +34,9 @@ Ready to play? Here's how to get started:
 **include how these map to classes**
 
 ## Contributor blogs
-[Meridith](https://medium.com/@meridithlawn2)
-[Drew](https://dev.to/drwomble)
-[Jess](https://medium.com/@jesscsommer)
+- [Meridith](https://medium.com/@meridithlawn2)
+- [Drew](https://dev.to/drwomble)
+- [Jess](https://medium.com/@jesscsommer)
 
 
 ## References 
