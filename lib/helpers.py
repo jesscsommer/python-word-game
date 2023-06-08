@@ -40,10 +40,15 @@ def register_or_find_player():
     user = Player.find_by_username(username)
     
     if (user is None 
-        and re.match(r"^[A-z0-9]+$", username)):
+        and re.match(r"^[A-z0-9]+$", username)
+        and 1 <= len(username) <= 8):
         new_player = Player.create(username)
         print(f"Hi there, {new_player.username}!")
         select_puzzle(new_player)
+    elif not re.match(r"^[A-z0-9]+$", username) or len(username) < 1 or len(username) > 8:
+        print('Usernames must be between 1 and 8 characters and cannot contain special characters(@_!$^...)')
+        print('Please try again')
+        register_or_find_player()
     else:
         print(f"Welcome back, {username}!")
         select_puzzle(user)

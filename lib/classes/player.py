@@ -18,8 +18,7 @@ class Player:
             ):
             self._username = username
         else:
-            # raise Exception('')
-            print('usernames must be between 1 and 8 characters and cannot contain special characters(@!$&%...)')
+            raise Exception('usernames must be between 1 and 8 characters and cannot contain special characters(@!$&%...)')
             # register_player()
     
     def results(self):
