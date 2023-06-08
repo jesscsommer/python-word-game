@@ -13,6 +13,8 @@ Result.create_table()
 
 player_1 = Player.create_player('Winnr')
 player_2 = Player.create_player('Loser')
+player_3 = Player.create_player('Sally')
+player_4 = Player.create_player('John')
 
 p1 = Puzzle.create_puzzle("Matte")
 p2 = Puzzle.create_puzzle("snake")
@@ -23,8 +25,11 @@ r1 = Result.create(player_1.id, p1.id, 0, 6)
 r2 = Result.create(player_2.id, p2.id, 300, 1)
 
 
-# for num in range(1, 18):
-#     Result.create(player_1.id, pm.id, num, sample([1, 2, 3, 4, 5], 1)[0])
+for num in range(1, 18):
+    Result.create(player_1.id, p1.id, num, sample([1, 2, 3, 4, 5], 1)[0])
+    Result.create(player_2.id, p1.id, num, sample([1, 2, 3, 4, 5], 1)[0])
+    Result.create(player_3.id, p1.id, num, sample([1, 2, 3, 4, 5], 1)[0])
+    Result.create(player_4.id, p1.id, num, sample([1, 2, 3, 4, 5], 1)[0])
 
 print('complete')
 import ipdb; ipdb.set_trace()
