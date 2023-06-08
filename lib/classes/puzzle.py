@@ -18,7 +18,6 @@ class Puzzle:
     
     @solution.setter 
     def solution(self, solution):
-        # should validate with RegEx too
         if (isinstance(solution, str)
             and len(solution) == 5
             and not hasattr(self, "_solution")):
@@ -122,17 +121,17 @@ class Puzzle:
         row = CURSOR.fetchone()
         return cls(row[1], row[0]) if row else None
     
-    # @classmethod
-    # def find_by_puzzle_name(cls, title):
-    #     CURSOR.execute(
-    #         """
-    #         SELECT * FROM puzzles
-    #         WHERE title is ?;
-    #         """,
-    #     (title,)
-    #     )
-    #     row = CURSOR.fetchone()
-    #     return cls(row[1], row[0]) if row else None
+    @classmethod
+    def find_by_solution(cls, solution):
+        CURSOR.execute(
+            """
+            SELECT * FROM puzzles
+            WHERE solution is ?;
+            """,
+        (solution,)
+        )
+        row = CURSOR.fetchone()
+        return cls(row[1], row[0]) if row else None
 
 from .__init__ import CONN, CURSOR
 from .player import Player
