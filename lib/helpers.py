@@ -33,25 +33,33 @@ def register_or_find_player():
         select_puzzle(user)
 
 def select_puzzle(current_player):
-    played_puzzle_ids = [puzzle.id for puzzle in current_player.puzzles()]
-    unplayed_puzzle_ids = [puzzle.id for puzzle in Puzzle.get_all() 
-                        if puzzle.id not in played_puzzle_ids]
+    unplayed_puzzles = list(set(Puzzle.get_all()) - set(current_player.puzzles()))
+    # played_puzzle_ids = [puzzle.id for puzzle in current_player.puzzles()]
+    # unplayed_puzzle_ids = [puzzle.id for puzzle in Puzzle.get_all() 
+    #                     if puzzle.id not in played_puzzle_ids]
     
     print("Which puzzle would you like to play?")
-    for id in unplayed_puzzle_ids: 
-        print(f"Puzzle {id}")
+    for puzzle in unplayed_puzzles:
+        print(f"Puzzle {puzzle.id}")
+    # for id in unplayed_puzzle_ids: 
+    #     print(f"Puzzle {id}")
 
-    selected_puzzle_id = input("Enter puzzle number: ")  
+    selected_puzzle_id = input("Enter puzzle number: ") 
+    selected_puzzle = Puzzle.find_by_id(int(selected_puzzle_id))
 
-    if int(selected_puzzle_id) in unplayed_puzzle_ids:
-        selected_puzzle = Puzzle.find_by_id(int(selected_puzzle_id))
+    if selected_puzzle in unplayed_puzzles:
         play_game(current_player, selected_puzzle)
+
+    # if int(selected_puzzle_id) in unplayed_puzzle_ids:
+    #     selected_puzzle = Puzzle.find_by_id(int(selected_puzzle_id))
+    #     play_game(current_player, selected_puzzle)
     else: 
         print("Not a valid puzzle number")
         select_puzzle(current_player)
     
 def create_puzzle():
     solution = input("Your puzzle solution, a 5-letter word: ")
+    # fix & validate (lowercase, regex)
     new_puzzle = Puzzle.create(solution.lower())
     if new_puzzle: 
         print(f"Puzzle created for {new_puzzle.solution}")
@@ -65,12 +73,11 @@ def play_game(player, puzzle, start = 1, prev_guesses = []):
             handle_guess(guesses, puzzle.solution)
             if new_guess.lower() == puzzle.solution:
                 console.print(f"[bold white on magenta] You guessed it! The word was {puzzle.solution} [/]")
-                print(puzzle.id)
                 # create a new result
                 score = 350 - (50 * guess_num)
                 new_result = Result.create(player.id, puzzle.id, score, guess_num)
                 console.print(f"[bold white] Here are your results: {new_result} [/]")
-                menu()
+                # menu()
                 break
         else: 
             console.print(f"[bold white on red] Each guess must be a 5-letter string. Please try again. [/]")

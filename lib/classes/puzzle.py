@@ -4,6 +4,14 @@ class Puzzle:
         self.solution = solution
         self.id = id 
     
+    def __eq__(self, other):
+        if not isinstance(other, type(self)):
+            return NotImplemented
+        return self.id == other.id 
+    
+    def __hash__(self):
+        return self.id
+        
     @property
     def solution(self):
         return self._solution
