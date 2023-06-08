@@ -32,7 +32,7 @@ class Player:
         # return player's scores for this puzzle
         # still needs to make use of the puzzle arg
         return [result.score for result in self.results()]
-    
+
     @classmethod
     def create_table(cls): 
         sql = """
