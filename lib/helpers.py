@@ -19,61 +19,31 @@ def menu():
     print("4) View leaderboard")
     print("5) Quit")
 
-def register_player():
+def register_or_find_player():
     username = input("Your username: ")
-    check_username = Player.find_by_username(username)
+    user = Player.find_by_username(username)
 
-    if (check_username is None 
+    if (user is None 
         and re.match(r"^[a-zA-Z0-9]+$", username)):
         new_player = Player.create(username)
         print(f"Hi there, {new_player.username}!")
         select_puzzle(new_player)
     else:
-        print("That username is taken")
-        # offer option for user to retry with new username 
-        # or go back to play game as the player with that name
-        register_player()
-
-def validate_player():
-    # should refactor this so that the username logic is in one place; 
-    # also I don't think we need the regex here 
-
-    username = input("Your username: ")
-    current_player = Player.find_by_username(username)
-    if current_player is None and re.match(r"^[a-zA-Z0-9]+$", username):
-        print('That username does not exist create the new username then start game')
-        register_player()
-    else:
-        print(f"Welcome back {username}")
-        select_puzzle(current_player)
+        print(f"Welcome back, {username}!")
+        select_puzzle(user)
 
 def select_puzzle(current_player):
-    print(f"current player: {current_player}")
-    print(f"current player id: {current_player.id}")
-    print(f"current player results: {current_player.results()}")
-    print(f"current player puzzles: {current_player.puzzles()}")
     played_puzzle_ids = [puzzle.id for puzzle in current_player.puzzles()]
-    print(f"played ids: {played_puzzle_ids}")
     unplayed_puzzle_ids = [puzzle.id for puzzle in Puzzle.get_all() 
                         if puzzle.id not in played_puzzle_ids]
-    print(f"unplayed ids: {unplayed_puzzle_ids}")
-
-    # unplayed_puzzles = list(set(Puzzle.get_all()) - set(current_player.puzzles()))
-    # unplayed_puzzle_ids = [puzzle.id for puzzle in unplayed_puzzles]
-    
-    print("Which puzzle would you like to play?")
-    for id in unplayed_puzzle_ids: 
-        print(f"Puzzle {id}")
-
     selected_puzzle_id = input("Enter puzzle number: ")  
+
     if int(selected_puzzle_id) in unplayed_puzzle_ids:
         selected_puzzle = Puzzle.find_by_id(int(selected_puzzle_id))
         play_game(current_player, selected_puzzle)
     else: 
         print("Not a valid puzzle number")
         select_puzzle(current_player)
-    # validate that selected_puzzle in list of available puzzles 
-    #don't let user play a puzzle they've already played 
     
 def create_puzzle():
     title = input("Your puzzle title, e.g. Puzzle1: ")
