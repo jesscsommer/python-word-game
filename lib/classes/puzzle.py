@@ -32,15 +32,17 @@ class Puzzle:
         scores = self.get_scores()
         if scores:
             sorted_scores = sorted(scores, key = lambda tup:tup[1], reverse = True)
-        top_ten_scores = sorted_scores[:10] if len(sorted_scores) > 10 else sorted_scores[:len(sorted_scores)]
-        print("HIGH SCORES: ")
-        # can try to use enumerate instead of index
-        index = 0
-        for each_score in top_ten_scores:
-            index+=1
-            print(f"""
-            {index}. {each_score[0]}: {each_score[-1]}
-            """)
+            top_ten_scores = sorted_scores[:10] if len(sorted_scores) > 10 else sorted_scores[:len(sorted_scores)]
+            print("HIGH SCORES: ")
+            index = 0
+            for each_score in top_ten_scores:
+                index+=1
+                print(f"""
+                {index}. {each_score[0]}: {each_score[-1]}
+                """)
+        else:
+            print("No scores for this puzzle. Be the first to play!")
+
     def players(self):
         all_players = self.get_scores()
         players_list = list({each_player[0] for each_player in all_players})

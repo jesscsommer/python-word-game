@@ -4,9 +4,6 @@ from rich.theme import Theme
 from classes.style import Style
 import re
 
-# do more with rich & console
-# create some global styles to reference throughout
-# rich supports themes --> check out 
 cli_theme = Theme({
     "header": "bold black on white",
     "correct_letter": "bold white frame on green",
@@ -64,13 +61,39 @@ def select_puzzle(current_player):
         print(f"Puzzle {puzzle.id}")
 
     selected_puzzle_id = input("Enter puzzle number: ") 
-    selected_puzzle = Puzzle.find_by_id(int(selected_puzzle_id))
+    if re.match(r"^[0-9]$", selected_puzzle_id):
+        selected_puzzle = Puzzle.find_by_id(int(selected_puzzle_id))
 
-    if selected_puzzle in unplayed_puzzles:
-        play_game(current_player, selected_puzzle, 1, [])
+        if selected_puzzle in unplayed_puzzles:
+            play_game(current_player, selected_puzzle, 1, [])
+        elif selected_puzzle:
+            print("You already played that one!")
+            select_puzzle(current_player)
+        else: 
+            print("Not a valid puzzle number")
+            select_puzzle(current_player)
     else: 
         print("Not a valid puzzle number")
         select_puzzle(current_player)
+
+def view_leaderboard():
+    
+    print("Which leaderboard would you like to see?")
+    for puzzle in Puzzle.get_all():
+        print(f"Puzzle {puzzle.id}")
+        
+    selected_puzzle_id = input("Enter puzzle number: ")
+    if re.match(r"^[0-9]$", selected_puzzle_id):
+        selected_puzzle = Puzzle.find_by_id(int(selected_puzzle_id))
+    
+        if selected_puzzle:
+            selected_puzzle.high_scores()
+        else:
+            print("No puzzle with that number")
+            view_leaderboard()
+    else:
+        print("Not a valid input")
+        view_leaderboard()
     
 def create_puzzle():
     solution = input("Your puzzle solution, a 5-letter word: ")
@@ -111,8 +134,6 @@ def play_game(player, puzzle, start = 1, prev_guesses = []):
     else: 
         new_result = Result.create(player.id, puzzle.id, 0, guess_num)
         print(f"Game over! The word was {puzzle.solution}")
-        #menu()
-
 
 def handle_guess(guesses, word):
     for guess in guesses: 
