@@ -2,10 +2,15 @@
 from rich.console import Console 
 import re
 
+# do more with rich & console
+# create some global styles to reference throughout
+# rich supports themes --> check out 
+console = Console(width=150)
 
-console = Console(width=50)
+EXIT_WORDS = ["5", "exit", "quit"]
 
 def welcome():
+    # come up with new title
     print("Welcome to the Python Word Game!")
 
 def menu():
@@ -17,66 +22,71 @@ def menu():
     print("4) View leaderboard")
     print("5) Quit")
 
-def register_player():
-    username = input("Your username: ")
-    check_username = Player.find_by_username(username)
-    if check_username is None and re.match(r"^[a-zA-Z0-9]+$", username):
-        Player.create(username)
-        print(f"Hi there, {username}!")
-        ready_to_play = input("Ready to play? Y/N: ")
-        if ready_to_play.upper() == "Y":
-            # selected_puzzle_dummy_test = Puzzle("Puzzle1", "snake")
-            select_puzzle()
-        else:
-            menu()
-    else:
-        print('That username is taken try another one')
-        register_player()
+def check_input_for_exit(input):
+    check = input.lower()
+    if check in EXIT_WORDS:
+        exit_cli()
 
-def validate_player():
+def register_or_find_player():
     username = input("Your username: ")
-    check_username = Player.find_by_username(username)
-    if check_username is None and re.match(r"^[a-zA-Z0-9]+$", username):
-        print('That username does not exist create the new username then start game')
-        register_player()
+    username = username.strip()
+    check_input_for_exit(username)
+    user = Player.find_by_username(username)
+    
+    if (user is None 
+        and re.match(r"^[A-z0-9]+$", username)):
+        new_player = Player.create(username)
+        print(f"Hi there, {new_player.username}!")
+        select_puzzle(new_player)
     else:
-        print(f"Welcome back {username}")
-        ready_to_play = input("Ready to play? Y/N: ")
-        if ready_to_play.upper() == "Y":
-                select_puzzle()
-        else:
-                menu()
+        print(f"Welcome back, {username}!")
+        select_puzzle(user)
 
-def select_puzzle():
+def select_puzzle(current_player):
+    unplayed_puzzles = list(set(Puzzle.get_all()) - set(current_player.puzzles()))
+
     print("Which puzzle would you like to play?")
-    # show list of puzzle options from DB, a get_all & display 
-    # (only display what this user hasn't played)
-    selected_puzzle = input("Enter puzzle name: ")
-    # validate that selected_puzzle in list of available puzzles 
-    #don't let user play a puzzle they've already played 
-    play_game(selected_puzzle)
+    for puzzle in unplayed_puzzles:
+        print(f"Puzzle {puzzle.id}")
 
+    selected_puzzle_id = input("Enter puzzle number: ") 
+    selected_puzzle = Puzzle.find_by_id(int(selected_puzzle_id))
+
+    if selected_puzzle in unplayed_puzzles:
+        play_game(current_player, selected_puzzle)
+    else: 
+        print("Not a valid puzzle number")
+        select_puzzle(current_player)
+    
 def create_puzzle():
-    title = input("Your puzzle title, e.g. Puzzle1: ")
     solution = input("Your puzzle solution, a 5-letter word: ")
-    new_puzzle = Puzzle(title.lower(), solution.lower())
-    if new_puzzle: 
-        print("Puzzle created")
+    solution = solution.strip()
+    check_input_for_exit(solution)
+
+    if (re.match(r"^[A-z]{5}$", solution)
+        and not Puzzle.find_by_solution(solution)):
+        Puzzle.create(solution.lower())
+        print(f"Puzzle created for {solution}")
+    else: 
+        print("Solution must be a 5-letter word and unique among puzzles")
+        create_puzzle()
 
 def play_game(player, puzzle, start = 1, prev_guesses = []):
     guesses = prev_guesses
     for guess_num in range(start, 7):
         new_guess = input("Enter your guess: ")
+        new_guess = new_guess.strip()
+        check_input_for_exit(new_guess)
+        
         if re.match(r"^[A-z]{5}$", new_guess):
             guesses.append(new_guess)
             handle_guess(guesses, puzzle.solution)
             if new_guess.lower() == puzzle.solution:
                 console.print(f"[bold white on magenta] You guessed it! The word was {puzzle.solution} [/]")
-                # create a new result
                 score = 350 - (50 * guess_num)
                 new_result = Result.create(player.id, puzzle.id, score, guess_num)
                 console.print(f"[bold white] Here are your results: {new_result} [/]")
-                exit_cli()
+
                 break
         else: 
             console.print(f"[bold white on red] Each guess must be a 5-letter string. Please try again. [/]")
@@ -85,7 +95,7 @@ def play_game(player, puzzle, start = 1, prev_guesses = []):
     else: 
         new_result = Result.create(player.id, puzzle.id, 0, guess_num)
         print(f"Game over! The word was {puzzle.solution}")
-        exit_cli()
+        menu()
 
 
 def handle_guess(guesses, word):
