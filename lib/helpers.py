@@ -1,27 +1,35 @@
-# update these to actually reference the SQL updates
 from rich.console import Console 
+from rich.padding import Padding
+from rich.theme import Theme
 import re
 
 # do more with rich & console
 # create some global styles to reference throughout
 # rich supports themes --> check out 
-console = Console(width=150)
+cli_theme = Theme({
+    "header": "bold black on white",
+    "correct_letter": "bold white frame on green",
+    "misplaced_letter": "bold white frame on yellow",
+    "wrong_letter": "dim frame",
+    "error": "bold white on red"
+})
+console = Console(theme=cli_theme)
 
 EXIT_WORDS = ["5", "exit", "quit"]
 
 def welcome():
     # come up with new title
-    print("Welcome to the Python Word Game!")
+    welcome = Padding("Welcome to the Python Word Game!", (1, 1), style="header")
+    console.print(welcome, justify="center")
 
 def menu():
-    print("Choose an option: ")
-    print("-------------------")
+    console.print("Choose an option: ", style="header")
     print("1) Create new player")
     print("2) Play game")
     print("3) Create new puzzle")
     print("4) View leaderboard")
     print("5) Quit")
-
+    
 def check_input_for_exit(input):
     check = input.lower()
     if check in EXIT_WORDS:
@@ -77,7 +85,7 @@ def play_game(player, puzzle, start = 1, prev_guesses = []):
         new_guess = input("Enter your guess: ")
         new_guess = new_guess.strip()
         check_input_for_exit(new_guess)
-        
+
         if re.match(r"^[A-z]{5}$", new_guess):
             guesses.append(new_guess)
             handle_guess(guesses, puzzle.solution)
@@ -95,7 +103,7 @@ def play_game(player, puzzle, start = 1, prev_guesses = []):
     else: 
         new_result = Result.create(player.id, puzzle.id, 0, guess_num)
         print(f"Game over! The word was {puzzle.solution}")
-        menu()
+        #menu()
 
 
 def handle_guess(guesses, word):
@@ -103,11 +111,11 @@ def handle_guess(guesses, word):
         styled_guess = []
         for letter, correct_letter in zip(guess, word):
             if letter == correct_letter: 
-                style = "bold white on green"
+                style = "correct_letter"
             elif letter in word: 
-                style = "bold white on yellow"
+                style = "misplaced_letter"
             else: 
-                style = "dim"
+                style = "wrong_letter"
             styled_guess.append(f"[{style}]{letter}[/]")
         console.print("".join(styled_guess))
 
