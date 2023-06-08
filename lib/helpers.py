@@ -7,6 +7,8 @@ import re
 # rich supports themes --> check out 
 console = Console(width=150)
 
+EXIT_WORDS = ["5", "exit", "quit"]
+
 def welcome():
     # come up with new title
     print("Welcome to the Python Word Game!")
@@ -20,10 +22,17 @@ def menu():
     print("4) View leaderboard")
     print("5) Quit")
 
+def check_input_for_exit(input):
+    check = input.lower()
+    if check in EXIT_WORDS:
+        exit_cli()
+
 def register_or_find_player():
     username = input("Your username: ")
+    username = username.strip()
+    check_input_for_exit(username)
     user = Player.find_by_username(username)
-
+    
     if (user is None 
         and re.match(r"^[A-z0-9]+$", username)):
         new_player = Player.create(username)
@@ -52,6 +61,8 @@ def select_puzzle(current_player):
 def create_puzzle():
     solution = input("Your puzzle solution, a 5-letter word: ")
     solution = solution.strip()
+    check_input_for_exit(solution)
+
     if (re.match(r"^[A-z]{5}$", solution)
         and not Puzzle.find_by_solution(solution)):
         Puzzle.create(solution.lower())
@@ -65,6 +76,8 @@ def play_game(player, puzzle, start = 1, prev_guesses = []):
     for guess_num in range(start, 7):
         new_guess = input("Enter your guess: ")
         new_guess = new_guess.strip()
+        check_input_for_exit(new_guess)
+        
         if re.match(r"^[A-z]{5}$", new_guess):
             guesses.append(new_guess)
             handle_guess(guesses, puzzle.solution)
