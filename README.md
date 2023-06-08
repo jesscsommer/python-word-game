@@ -16,8 +16,8 @@ Welcome to Letter Lasso, a [Wordle](https://www.nytimes.com/games/wordle/index.h
 Ready to play? Here's how to get started: 
 1. Run `python3 lib/cli.py`
 2. Enter a number 1-4 from the menu. Start with 1 to register as a new player. 
-3. Follow the resulting prompts.
-4. Type "5", "exit", or "quit" at any point to end the program.
+3. Follow the resulting prompts
+4. Type "5", "exit", or "quit" at any point to end the program
 
 ## Features 
 - 🐎 Create a new player 
