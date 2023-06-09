@@ -1,3 +1,5 @@
+
+
 class Puzzle:
     
     def __init__(self, solution, id=None):
@@ -33,7 +35,6 @@ class Puzzle:
         if scores:
             sorted_scores = sorted(scores, key = lambda tup:tup[1], reverse = True)
             top_ten_scores = sorted_scores[:10] if len(sorted_scores) > 10 else sorted_scores[:len(sorted_scores)]
-            print("HIGH SCORES: ")
             index = 0
             for each_score in top_ten_scores:
                 index+=1
