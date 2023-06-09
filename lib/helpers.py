@@ -15,7 +15,7 @@ rich_style = Style.__rich_console__
 
 console = Console(theme=cli_theme)
 
-EXIT_WORDS = ["5", "exit", "quit"]
+EXIT_WORDS = ["6", "exit", "quit"]
 
 def welcome():
     welcome = Padding("🐎 🤠 🐎 🤠 Welcome to Letter Lasso!🤠 🐎 🤠 🐎", (1, 1), style="header")
