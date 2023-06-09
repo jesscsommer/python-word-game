@@ -23,11 +23,25 @@ Ready to play? Here's how to get started:
 ![](letter_lasso.gif) 
 
 🐎 Create a new player <br>
+- Enter a username to register and be eligible to play
+
 🐎 Select an unplayed puzzle <br>
+- View your list of unplayed puzzles
+- Enter your desired puzzle number to start
+
 🐎 Take up to 6 guesses per puzzle <br>
+- Type a 5-letter word to guess 
+- Only alphabetical characters allowed
+
 🐎 Receive your score <br>
+- Find out your total score based on your guesses
+- 300 is the max score if you guess the word in 1 turn
+
 🐎 Create a new puzzle <br>
+- Enter a 5-letter word to joing the puzzle database
+
 🐎 View high scores by puzzle <br>
+- Select a puzzle number to view its leaderboard
 
 ## Data tables
 🤠 players <br>
