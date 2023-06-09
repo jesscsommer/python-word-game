@@ -33,23 +33,23 @@ def check_input_for_exit(input):
         exit_cli()
 
 def register_or_find_player():
-    username = input("Your username: ").strip()
+    username = input("Enter your username: ").strip()
     check_input_for_exit(username)
     user = Player.find_by_username(username)
     
     if (user is None 
         and re.match(r"^[A-z0-9]+$", username)):
         new_player = Player.create(username)
-        print(f"Hi there, {new_player.username}!")
+        console.print(f"Hi there, {new_player.username}!", style="header")
         select_puzzle(new_player)
     else:
-        print(f"Welcome back, {username}!")
+        console.print(f"Welcome back, {username}!", style="header")
         select_puzzle(user)
 
 def select_puzzle(current_player):
     unplayed_puzzles = list(set(Puzzle.get_all()) - set(current_player.puzzles()))
 
-    print("Which puzzle would you like to play?")
+    console.print("Which puzzle would you like to play?", style="header")
     for puzzle in unplayed_puzzles:
         print(f"Puzzle {puzzle.id}")
 
@@ -60,18 +60,18 @@ def select_puzzle(current_player):
         if selected_puzzle in unplayed_puzzles:
             play_game(current_player, selected_puzzle, 1, [])
         elif selected_puzzle:
-            print("You already played that one!")
+            console.print("You already played that one!", style="header")
             select_puzzle(current_player)
         else: 
-            print("Not a valid puzzle number")
+            console.print("Not a valid puzzle number", style="header")
             select_puzzle(current_player)
     else: 
-        print("Not a valid puzzle number")
+        console.print("Not a valid puzzle number", style="header")
         select_puzzle(current_player)
 
 def view_leaderboard():
     
-    print("Which leaderboard would you like to see?")
+    console.print("Which leaderboard would you like to see?", style="header")
     for puzzle in Puzzle.get_all():
         print(f"Puzzle {puzzle.id}")
         
@@ -80,12 +80,15 @@ def view_leaderboard():
         selected_puzzle = Puzzle.find_by_id(int(selected_puzzle_id))
     
         if selected_puzzle:
+            title = Padding("🐎 🤠 🐎 🤠 Letter Lasso Leaderboard🤠 🐎 🤠 🐎", (1, 1), style="header")
+            console.print(title, justify="center")
+
             selected_puzzle.high_scores()
         else:
-            print("No puzzle with that number")
+            console.print("No puzzle with that number", style="header")
             view_leaderboard()
     else:
-        print("Not a valid input")
+        console.print("Not a valid input", style="header")
         view_leaderboard()
 
 def game_rules():
@@ -106,9 +109,9 @@ def create_puzzle():
     if (re.match(r"^[A-z]{5}$", solution)
         and not Puzzle.find_by_solution(solution)):
         Puzzle.create(solution.lower())
-        print(f"Puzzle created for {solution}")
+        console.print(f"Puzzle created for {solution}", style="header")
     else: 
-        print("Solution must be a 5-letter word and unique among puzzles")
+        console.print("Solution must be a 5-letter word and unique among puzzles", style="header")
         create_puzzle()
 
 def play_game(player, puzzle, start = 1, prev_guesses = []):
@@ -133,7 +136,7 @@ def play_game(player, puzzle, start = 1, prev_guesses = []):
 
     else: 
         new_result = Result.create(player.id, puzzle.id, 0, guess_num)
-        print(f"Game over! The word was {puzzle.solution}")
+        console.print(f"[bold white on red] Game over! The word was {puzzle.solution} [/]")
 
 def handle_guess(guesses, word):
     for guess in guesses: 
@@ -149,11 +152,11 @@ def handle_guess(guesses, word):
         console.print("".join(styled_guess))
 
 def exit_cli():
-    print("Until next time!")
+    console.print("🐎 🤠 🐎 🤠 Until next time!🤠 🐎 🤠 🐎", style="header")
     exit()
 
 def invalid_input():
-    print("That input is not valid. Type a number to select an option.")
+    console.print("That input is not valid. Type a number to select an option.", style="header")
 
 from classes.puzzle import Puzzle
 from classes.player import Player
