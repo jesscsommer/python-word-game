@@ -1,3 +1,5 @@
+
+
 class Puzzle:
     
     def __init__(self, solution, id=None):

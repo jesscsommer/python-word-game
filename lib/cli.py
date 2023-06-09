@@ -7,6 +7,7 @@ from helpers import (
     view_leaderboard,
     exit_cli,
     invalid_input,
+    game_rules
 )
 
 def main(): 
@@ -23,6 +24,8 @@ def main():
         elif choice == "4": 
             view_leaderboard()
         elif choice == "5":
+            game_rules()
+        elif choice == "6":
             exit_cli()
         else: 
             invalid_input()

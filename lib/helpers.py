@@ -15,7 +15,7 @@ console = Console(theme=cli_theme)
 EXIT_WORDS = ["5", "exit", "quit"]
 
 def welcome():
-    welcome = Padding("Welcome to Letter Lasso!", (1, 1), style="header")
+    welcome = Padding("🐎 🤠 🐎 🤠 Welcome to Letter Lasso!🤠 🐎 🤠 🐎", (1, 1), style="header")
     console.print(welcome, justify="center")
 
 def menu():
@@ -24,7 +24,8 @@ def menu():
     print("2) Play game")
     print("3) Create new puzzle")
     print("4) View leaderboard")
-    print("5) Quit")
+    print("5) View game rules")
+    print("6) Quit")
     
 def check_input_for_exit(input):
     check = input.lower()
@@ -86,6 +87,16 @@ def view_leaderboard():
     else:
         print("Not a valid input")
         view_leaderboard()
+
+def game_rules():
+    rules_header = Padding("🐎 🤠 🐎 🤠 Laws of Letter Lasso 🤠 🐎 🤠 🐎", (1, 1), style="header")
+    console.print(rules_header, justify="center")
+    print("""
+        ~ Guess a 5 letter word for each turn
+        ~ Letters highlighted in yellow are correct, but misplaced
+        ~ Letters highlighted in green are correct and in the right place
+        ~ You have 6 chances to guess the correct word!
+    """)
     
 def create_puzzle():
     solution = input("Your puzzle solution, a 5-letter word: ")
