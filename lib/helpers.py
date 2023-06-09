@@ -152,7 +152,7 @@ def handle_guess(guesses, word):
         console.print("".join(styled_guess))
 
 def exit_cli():
-    console.print("🐎 🤠 🐎 🤠 Until next time!🤠 🐎 🤠 🐎", style="header")
+    console.print("🐎 🤠 🐎 🤠 Ya'll come back, ya hear!🤠 🐎 🤠 🐎", style="header")
     exit()
 
 def invalid_input():
